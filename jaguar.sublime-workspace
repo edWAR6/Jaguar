@@ -1,0 +1,439 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"dra",
+				"dragbox-content"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"inp",
+				"INPUT	Tag"
+			],
+			[
+				"pre",
+				"preventDefault"
+			],
+			[
+				"ba",
+				"background-size"
+			],
+			[
+				"save",
+				"saveDB"
+			],
+			[
+				"chart",
+				"chart2"
+			],
+			[
+				"back",
+				"background"
+			],
+			[
+				"im",
+				"important"
+			],
+			[
+				"c",
+				"css"
+			],
+			[
+				"fon",
+				"font-size"
+			],
+			[
+				"tex",
+				"text-transform"
+			],
+			[
+				"h",
+				"h2	Tag"
+			],
+			[
+				"al",
+				"alert"
+			],
+			[
+				"sh",
+				"show"
+			],
+			[
+				"bor",
+				"border"
+			],
+			[
+				"bac",
+				"background"
+			],
+			[
+				"swi",
+				"swiperight"
+			],
+			[
+				"swipe",
+				"swipedown"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"bo",
+				"bottom"
+			],
+			[
+				"borde",
+				"border"
+			],
+			[
+				"in",
+				"inline-block"
+			],
+			[
+				"conta",
+				"contactUs"
+			],
+			[
+				"u",
+				"ul	Tag"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"v",
+				"vertical-align"
+			],
+			[
+				"border",
+				"border-bottom"
+			],
+			[
+				"font-",
+				"font-weight"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Users/edWAR6/Work/iPadDemo/www/css/index.css",
+		"/Users/edWAR6/Work/iPadDemo/www/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/books/interactive/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/css/jquery.mobile-1.2.0.min.css",
+		"/Users/edWAR6/Work/iPadDemo/www/books/bible/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/books/magazine/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/books/magazine_single/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/dialog.html",
+		"/Users/edWAR6/Work/iPadDemo/www/dialog-alt.html",
+		"/Users/edWAR6/Work/iPadDemo/www/dialog-buttons.html",
+		"/Users/edWAR6/Work/iPadDemo/www/dialog-overlay.html",
+		"/Users/edWAR6/Work/iPadDemo/www/page-transitions-dialog.html",
+		"/Users/edWAR6/Work/iPadDemo/www/swipeDemo.html",
+		"/Users/edWAR6/Work/iPadDemo/www/js/index.js",
+		"/Users/edWAR6/Work/iPadDemo/www/css/book.css",
+		"/Users/edWAR6/Work/iPadDemo/www/book2.html",
+		"/Users/edWAR6/Work/iPadDemo/www/Books/bible/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/Books/magazine/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/Books/magazine_single/index.html",
+		"/Users/edWAR6/Work/iPadDemo/www/js/jquery-1.8.2.min.js",
+		"/Users/edWAR6/Work/BRL/images/contactUs.png",
+		"/Users/edWAR6/Work/BRL/images/whoWeAre.png",
+		"/Users/edWAR6/Work/BRL/jquery-1.8.2.min.js",
+		"/Users/edWAR6/Work/BRL/whoWeAre.html",
+		"/Users/edWAR6/Work/BRL/solutions.html",
+		"/Users/edWAR6/Work/BRL/contact_us.html",
+		"/Users/edWAR6/Work/BRL/values",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/scripts/nummux/dashboard.js",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/WEB-INF/jspx/user/socium_1.jspx",
+		"/Users/edWAR6/Work/nummux/scripts/nummux.sql",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/WEB-INF/tags/bizHeader.tagx",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/WEB-INF/tags/biz.tagx",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/WEB-INF/jspx/biz/myBiz.jspx",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/WEB-INF/jspx/findBiz.jspx",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/WEB-INF/jspx/biz/postBiz.jspx",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/scripts/nummux/postBiz.js",
+		"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/themes/default/css/nummux.css",
+		"/Users/edWAR6/Work/La quinta/main.css",
+		"/Users/edWAR6/Work/La quinta/css/main.css"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			"/Users/edWAR6/Work/iPadDemo/www",
+			"/Users/edWAR6/Work/nummux/nummux-web/src/main/webapp/scripts/"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"swipeH",
+			"iframe",
+			"\"controls",
+			"\"mov",
+			"borar",
+			"magazine inpu",
+			"\"true\">Atras</a>",
+			"personalis",
+			"dialog-alt",
+			"#dialog-alt",
+			".htm",
+			".html",
+			"\"page-transitions-page.html\"",
+			"page-success",
+			"\"page-transitions-dialog.html\"",
+			"dialog-success",
+			"#dialog\"",
+			"dialog-al",
+			"\"dialog.html\"",
+			"dialog.html",
+			"\"dialo",
+			"%;*/\n",
+			";\n",
+			"//book",
+			"book",
+			".ui-popup iframe",
+			".ui-popup iframe {",
+			"Personalisados",
+			"<form",
+			"form",
+			"scale",
+			"book",
+			"\"inter",
+			"internet",
+			"\"home",
+			"\"book",
+			"iframe",
+			"home",
+			"iframe",
+			"internet",
+			"video",
+			"dialogs\"",
+			"ifram",
+			"data-position=\"fixed\"",
+			"-1",
+			"horientation",
+			"../dialog.html",
+			"<option value=\"#home\">",
+			"<option value=\"#home\">Controles</option>\\n<option value=\"#controls\">Controles</option>",
+			"\\n",
+			"<option value=\"#controls\">Controles</option>",
+			"<option value=\"#controls\">Controles</option>\\n<option value=\"#controls\">Controles</option>",
+			"<div data-role=\"header\"",
+			"jQuery",
+			"transp",
+			"#header ",
+			"replace",
+			"menu",
+			"movil",
+			"swipe",
+			"movility",
+			"sorry we have",
+			"	\n\ndemo.add('basic_map', function() {",
+			"src",
+			"data-inline=\"true\"",
+			"data-inline=\"true\" ",
+			"data-inline=\"true\"",
+			"prevent copy paste, to allow, change 'none' to 'text'",
+			"-webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */",
+			"<div class=\"ui-input-search ui-shadow-inset ui-btn-corner-all ui-btn-shadow ui-icon-searchfield",
+			"div.logo",
+			"/n",
+			"fir",
+			";",
+			"floatD",
+			"z-",
+			"profilePicture",
+			"noPhoto",
+			"onError",
+			"onSucces",
+			"fail",
+			"post",
+			".confirmMsg .valid",
+			".confirmMsg .valid, .confirmMsg .unavailable",
+			".confirmMsg .valid",
+			".confirmMsg .unavailable",
+			"tooltip",
+			"tooltip friend",
+			"listenLinks",
+			"profilePicture",
+			"profilePicture noPhoto",
+			"comission",
+			"comissionLabel",
+			"mybizlist",
+			"comissionLabel",
+			"commission",
+			"TODO",
+			"comLayer",
+			"111px",
+			".postBiz #bizDescriptionForm .itemsSection",
+			".postBiz #bizDescriptionForm .itemsSection input[type=\"text\"]",
+			"bizProductCommissionAmount",
+			"totalPrice",
+			"bizDescItem",
+			"alert",
+			"calert",
+			"alert"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"(){\n",
+			"\"true\" class=\"backMenu\">Atras</a>",
+			"\"#page-transitions-page\"",
+			"\"#page-transitions-dialog\"",
+			"\"#simpleDialog\"",
+			"",
+			"dialog.html",
+			"<option value=\"#home\">Inicio</option>\n        <option value=\"#controls\">Controles</option>",
+			"<option value=\"#home\">Controles</option>\\n<option value=\"#controls\">Controles</option>",
+			"<option value=\"#controls\">Controles</option>\\n<option value=\"#controls\">Controles</option>",
+			"$",
+			"#cover1 ",
+			"",
+			" \\n",
+			" no-repeat scroll 0 0 transparent;"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"jquery.mobile",
+				"css/jquery.mobile-1.2.0.min.css"
+			],
+			[
+				"socium.jsp",
+				"nummux-web/src/main/webapp/WEB-INF/jspx/user/socium.jspx"
+			],
+			[
+				"nummux.css",
+				"nummux-web/src/main/webapp/themes/default/css/nummux.css"
+			],
+			[
+				"socium.css",
+				"nummux-web/src/main/webapp/themes/default/css/socium.css"
+			],
+			[
+				"socium.js",
+				"nummux-web/src/main/webapp/scripts/nummux/socium.js"
+			],
+			[
+				"socium_1.jspx",
+				"nummux-web/src/main/webapp/WEB-INF/jspx/user/socium_1.jspx"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 257.0,
+	"status_bar_visible": true
+}
