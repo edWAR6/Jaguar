@@ -19,6 +19,7 @@
 var app = {
     // Application Constructor
     initialize: function() {
+        $.support.cors = true;
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -49,8 +50,8 @@ var loginScreen = {
     },
     login: function(){
         var logOnModel = { 
-            UserName: $( '#username' ).text(), 
-            Password: $( '#password' ).text()
+            UserName: $( '#username' ).val(), 
+            Password: $( '#password' ).val()
         };
         $.ajax({ 
             url: "http://192.168.1.106:2619/api/login", 
@@ -58,7 +59,7 @@ var loginScreen = {
             type: "POST", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
-                201: function (data) { 
+                200: function (data) { 
                     alert(data); 
                 } 
             } 
