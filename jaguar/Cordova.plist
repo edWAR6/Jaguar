@@ -29,6 +29,7 @@
 	<key>ExternalHosts</key>
 	<array>
 		<string>http://192.168.1.106:2619</string>
+		<string>http://172.24.22.22:2619</string>
 	</array>
 	<key>Plugins</key>
 	<dict>

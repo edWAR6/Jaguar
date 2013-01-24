@@ -17,6 +17,8 @@
  * under the License.
  */
 var app = {
+    serverAPI: "http://172.24.22.22:2619/api/login",
+    //serverAPI: "http://192.168.1.106:2619/api/login",
     // Application Constructor
     initialize: function() {
         $.support.cors = true;
@@ -32,7 +34,7 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady  , false);
 
         $( '#login' ).bind( 'pageinit', loginScreen.loginInit);
-        $( document ).on( 'mobileinit', setLoader);
+        //$( document ).on( 'mobileinit', setLoader);
     },
     onOffline: function(){
         alert('Conección a Internet no encontrada. Intente más tarde.');
@@ -57,6 +59,9 @@ var app = {
             theme: 'e',
             html: ""
         });
+    },
+    closeLoader: function(){
+        $.mobile.loading( 'hide' );
     }
 };
 
@@ -71,13 +76,18 @@ var loginScreen = {
             Password: $( '#password' ).val()
         };
         $.ajax({ 
-            url: "http://192.168.1.106:2619/api/login", 
+            url: app.serverAPI, 
             data: JSON.stringify(logOnModel), 
             type: "POST", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
-                200: function (data) { 
-                    $.mobile.changePage("#menu");
+                200: function (data) {
+                    app.closeLoader();
+                    if (data == 'true' || data == true) {
+                        $.mobile.changePage("#menu");
+                    }else{
+                        alert("Usuario o contraseña incorrecta");
+                    };
                 } 
             } 
         });
