@@ -41,15 +41,14 @@
                     <fieldset data-role="controlgroup">
                         <label for="username">
                         </label>
-                        <input name="username" id="username" placeholder="Usuario" value="" type="email">
+                        <input name="username" id="username" placeholder="Usuario" value="">
                     </fieldset>
                 </div>
                 <div data-role="fieldcontain">
                     <fieldset data-role="controlgroup">
                         <label for="password">
                         </label>
-                        <input name="password" id="password" placeholder="Contraseña" value=""
-                        type="password">
+                        <input name="password" id="password" placeholder="Contraseña" value="" type="password">
                     </fieldset>
                 </div>
                 <a id="loginUser" data-role="button" href="">
@@ -58,13 +57,410 @@
             </div>
         </div>
 
-        <!-- <div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
+        <!-- Menu -->
+        <div data-role="page" data-theme="a" id="menu">
+            <div data-theme="" data-role="header" data-position="fixed">
+                <h3>
+                    Jaguar
+                </h3>
             </div>
-        </div> -->
+            <div data-role="content">
+                <ul id="menuListView" data-role="listview" data-divider-theme="" data-inset="true">
+                    <li data-role="list-divider" role="heading">
+                        Mensajes
+                    </li>
+                    <li data-theme="b">
+                        <a href="#messages" data-transition="slide">
+                            Personales
+                            <span class="ui-li-count">
+                                2
+                            </span>
+                        </a>
+                    </li>
+                    <li data-theme="b">
+                        <a href="#messages" data-transition="slide">
+                            Públicos
+                            <span class="ui-li-count">
+                                1
+                            </span>
+                        </a>
+                    </li>
+                    <li data-role="list-divider" role="heading">
+                        Notas
+                    </li>
+                    <li data-theme="e">
+                        <a href="#searchGrades" data-transition="slide">
+                            Calificaciones
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a href="#login" data-transition="fade" data-theme="" data-icon="home">
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#menu" data-transition="fade" data-theme="" data-icon="grid"
+                            class="ui-btn-active ui-state-persist">
+                                Menú
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#config" data-transition="fade" data-theme="" data-icon="grid">
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grades -->
+        <div data-role="page" data-theme="a" id="grades">
+            <div data-theme="" data-role="header">
+                <h3>
+                    Calificaciones
+                </h3>
+            </div>
+            <div data-role="content">
+                <div data-role="collapsible-set" data-theme="d" data-content-theme="e">
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>
+                            CIE 202 (MM:8.7 CF:9.4)
+                        </h3>
+                        <div>
+                            <p>
+                                <strong>
+                                    Curso:
+                                </strong>
+                                CIE 202 - Procesos Químicos Inorgánicos
+                            </p>
+                            <p>
+                                <strong>
+                                    Sección:
+                                </strong>
+                                4
+                            </p>
+                            <p>
+                                <strong>
+                                    Créditos:
+                                </strong>
+                                3
+                            </p>
+                            <p>
+                                <strong>
+                                    Medio periodo:
+                                </strong>
+                                9.2
+                            </p>
+                            <p>
+                                <strong>
+                                    Final:
+                                </strong>
+                                <span style="text-decoration: underline;">
+                                    8.9
+                                </span>
+                            </p>
+                            <p>
+                                <strong>
+                                    Estado:
+                                </strong>
+                                <span style="color: rgb(0, 128, 0);">
+                                    Aprovado
+                                </span>
+                            </p>
+                            <p>
+                                <strong>
+                                    Recuperación:
+                                </strong>
+                                No aplica
+                            </p>
+                        </div>
+                    </div>
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>
+                            CUL 202 (MM:7.90 CF:8.5)
+                        </h3>
+                        <div>
+                            <p>
+                                <strong>
+                                    Curso:
+                                </strong>
+                                CUL 202 - Manejo de Plagas: Enfermedades
+                            </p>
+                            <p>
+                                <strong>
+                                    Sección:
+                                </strong>
+                                4
+                            </p>
+                            <p>
+                                <strong>
+                                    Créditos:
+                                </strong>
+                                &nbsp;2
+                            </p>
+                            <p>
+                                <strong>
+                                    Medio periodo:
+                                </strong>
+                                &nbsp;5.2
+                            </p>
+                            <p>
+                                <strong>
+                                    Final:
+                                </strong>
+                                &nbsp;6
+                                <span style="text-decoration: underline;" data-mce-style="text-decoration: underline;">
+                                    .9
+                                </span>
+                            </p>
+                            <p>
+                                <strong>
+                                    Estado:
+                                </strong>
+                                <span style="color: rgb(255, 0, 0);">
+                                    Reprovado
+                                </span>
+                            </p>
+                            <p>
+                                <strong>
+                                    Recuperación:
+                                </strong>
+                                No aplica
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a href="#login" data-transition="fade" data-theme="" data-icon="home">
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#menu" data-transition="fade" data-theme="" data-icon="grid">
+                                Menú
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#config" data-transition="fade" data-theme="" data-icon="grid">
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search grades -->
+        <div data-role="page" data-theme="b" id="searchGrades">
+            <div data-theme="" data-role="header">
+                <h3>
+                    Periodos
+                </h3>
+            </div>
+            <div data-role="content">
+                <div data-role="collapsible-set">
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>
+                            2013 - PP: 7.5
+                        </h3>
+                        <ul data-role="listview" data-divider-theme="b" data-inset="false">
+                            <li data-theme="c">
+                                <a href="#grades" data-transition="slide">
+                                    I Trimestre - PP: 7.0
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div data-role="collapsible" data-collapsed="false">
+                        <h3>
+                            2012 - PP: 9.8
+                        </h3>
+                        <ul data-role="listview" data-divider-theme="b" data-inset="false">
+                            <li data-theme="c">
+                                <a href="#grades" data-transition="slide">
+                                    III Trimestre - PP: 9.9
+                                </a>
+                            </li>
+                            <li data-theme="c">
+                                <a href="#grades" data-transition="slide">
+                                    II Trimestre - PP: 9.7
+                                </a>
+                            </li>
+                            <li data-theme="c">
+                                <a href="#grades" data-transition="slide">
+                                    I Trimestre - PP: 9.8
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a href="#login" data-transition="fade" data-theme="" data-icon="home">
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#menu" data-transition="fade" data-theme="" data-icon="grid">
+                                Menú
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#config" data-transition="fade" data-theme="" data-icon="grid">
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Config -->
+        <div data-role="page" data-theme="a" id="config">
+            <div data-theme="" data-role="header">
+                <h3>
+                    Configuración
+                </h3>
+            </div>
+            <div data-role="content">
+                <h4>
+                    Usuario: Eric Alpizar
+                </h4>
+                <a data-role="button" href="#login">
+                    Cerrar cesión
+                </a>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="toggleswitch1">
+                            Notificaciones
+                        </label>
+                        <select name="toggleswitch1" id="toggleswitch1" data-theme="" data-role="slider">
+                            <option value="off">
+                                No
+                            </option>
+                            <option value="on">
+                                Si
+                            </option>
+                        </select>
+                    </fieldset>
+                </div>
+            </div>
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a href="#login" data-transition="fade" data-theme="" data-icon="home">
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#menu" data-transition="fade" data-theme="" data-icon="grid">
+                                Menú
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#config" data-transition="fade" data-theme="" data-icon="grid" class="ui-btn-active ui-state-persist">
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message -->
+        <div data-role="page" data-theme="b" id="messages">
+            <div data-theme="" data-role="header" data-position="fixed">
+                <h3>
+                    Mensajes
+                </h3>
+            </div>
+            <div data-role="content">
+                <div data-role="fieldcontain">
+                    <label for="selectmenu1">
+                        Ver:
+                    </label>
+                    <select data-native-menu="false" name="">
+                        <option value="nuevos">
+                            Nuevos
+                        </option>
+                        <option value="anteriores">
+                            Anteriores
+                        </option>
+                    </select>
+                </div>
+                <div>
+                    <p>
+                        <b>
+                            Está listo el calendario de excursiones en la biblioteca.
+                        </b>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <b>
+                            Nuevo logo de la universidad.
+                        </b>
+                    </p>
+                    <p style="text-align: center;">
+                        <b>
+                            <img src="http://www.earth.ac.cr/wp-content/themes/cummins/images/logo.png"
+                            alt="Logo" title="Logo EARTH" data-mce-src="http://www.earth.ac.cr/wp-content/themes/cummins/images/logo.png">
+                        </b>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <b>
+                            Por favor pasar a la dirección.
+                        </b>
+                    </p>
+                </div>
+                <div>
+                    <p>
+                        <b>
+                            Se comunica que por motivos de vacasiones de fin de año, la soda estará
+                            cerrada a partir de las 2pm durante esta semana.
+                        </b>
+                    </p>
+                </div>
+            </div>
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li>
+                            <a href="#login" data-transition="fade" data-theme="" data-icon="home">
+                                Inicio
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#menu" data-transition="fade" data-theme="" data-icon="grid">
+                                Menú
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#config" data-transition="fade" data-theme="" data-icon="grid">
+                                Configuración
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <script type="text/javascript">
             app.initialize();
         </script>

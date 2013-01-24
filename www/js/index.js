@@ -20,6 +20,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         $.support.cors = true;
+
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -31,6 +32,7 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady  , false);
 
         $( '#login' ).bind( 'pageinit', loginScreen.loginInit);
+        $( document ).on( 'mobileinit', setLoader);
     },
     onOffline: function(){
         alert('Conección a Internet no encontrada. Intente más tarde.');
@@ -41,6 +43,20 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log('device ready');
+    },
+    setLoader: function(){
+        $.mobile.loader.prototype.options.text = "Accediendo";
+        $.mobile.loader.prototype.options.textVisible = false;
+        $.mobile.loader.prototype.options.theme = "e";
+        $.mobile.loader.prototype.options.html = "";
+    },
+    openLoader: function(message){
+        $.mobile.loading( 'show', {
+            text: message,
+            textVisible: true,
+            theme: 'e',
+            html: ""
+        });
     }
 };
 
@@ -49,6 +65,7 @@ var loginScreen = {
         $( '#loginUser' ).click(loginScreen.login);
     },
     login: function(){
+        app.openLoader("Iniciando sesión");
         var logOnModel = { 
             UserName: $( '#username' ).val(), 
             Password: $( '#password' ).val()
@@ -60,7 +77,7 @@ var loginScreen = {
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) { 
-                    alert(data); 
+                    $.mobile.changePage("#menu");
                 } 
             } 
         });
