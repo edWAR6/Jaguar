@@ -26,24 +26,42 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('offline', this.onOffline, false);
+        document.addEventListener('deviceready', this.onDeviceReady  , false);
+
+        $( '#login' ).bind( 'pageinit', loginScreen.loginInit);
+    },
+    onOffline: function(){
+        alert('Conección a Internet no encontrada. Intente más tarde.');
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+        console.log('device ready');
+    }
+};
+
+var loginScreen = {
+    loginInit: function(){
+        $( '#loginUser' ).click(loginScreen.login);
     },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
-
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
-
-        console.log('Received Event: ' + id);
+    login: function(){
+        var logOnModel = { 
+            UserName: $( '#username' ).text(), 
+            Password: $( '#password' ).text()
+        };
+        $.ajax({ 
+            url: "http://192.168.1.106:2619/api/login", 
+            data: JSON.stringify(logOnModel), 
+            type: "POST", 
+            contentType: "application/json;charset=utf-8", 
+            statusCode: { 
+                201: function (data) { 
+                    alert(data); 
+                } 
+            } 
+        });
     }
 };
