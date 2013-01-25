@@ -17,13 +17,13 @@
  * under the License.
  */
 var app = {
-    //serverAPI: "http://172.24.22.22:2619",
-    serverAPI: "http://192.168.1.109:2619",
+    serverAPI: "http://172.24.22.22:2619",
+    //serverAPI: "http://192.168.1.109:2619",
     user: "",
     // Application Constructor
     initialize: function() {
+        console.log("Application initialized");
         $.support.cors = true;
-
         this.bindEvents();
     },
     // Bind Event Listeners
@@ -31,6 +31,7 @@ var app = {
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
+        console.log("Binding events");
         document.addEventListener('offline', this.onOffline, false);
         document.addEventListener('deviceready', this.onDeviceReady  , false);
 
@@ -46,8 +47,30 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        console.log('device ready');
+        console.log('Device ready');
     },
+    openDatabase: function(){
+        console.log('Opening database');
+        if (typeof(window.openDatabase)!='undefined') {
+            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
+            db.transaction(app.populateDB, app.errorCB, app.successCB);
+            console.log('Database created');
+        }
+    },
+    populateDB: function(tx) {
+        tx.executeSql('CREATE TABLE IF NOT EXISTS UserState (userName unique, password, lastUserMessageId, lastPublicMessageId)');
+    },
+    successCB: function() {
+        console.log("Success processing SQL.");
+        //var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
+        //db.transaction(app.queryDB, app.errorCB);
+    },
+    errorCB: function(err) {
+        console.log("Error processing SQL: "+err.code+", "+err.message);
+    },
+    // queryDB: function(tx) {
+    //     tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
+    // },
     openLoader: function(message){
         $.mobile.loading( 'show', {
             text: message,
@@ -69,14 +92,30 @@ var app = {
 
 var loginScreen = {
     loginInit: function(){
-        $( '#loginUser' ).click(loginScreen.login);
+        console.log("Login initialized");
+        $( '#loginUser' ).click(loginScreen.loginClick);
+        app.openDatabase();
+        loginScreen.getUser(function(tx, result){
+            if (result.rows.length > 0) {
+                console.log("Existing user: " + result.rows.item(0).userName);
+                app.openLoader("Iniciando sesión automáticamente");
+                var logOnModel = { 
+                    UserName: result.rows.item(0).userName, 
+                    Password: result.rows.item(0).passowrd
+                };
+                loginScreen.login(logOnModel);
+            };
+        });
     },
-    login: function(){
+    loginClick: function(){
         app.openLoader("Iniciando sesión");
         var logOnModel = { 
             UserName: $( '#username' ).val(), 
             Password: $( '#password' ).val()
         };
+        loginScreen.login(logOnModel);
+    },
+    login: function(logOnModel){
         $.ajax({ 
             url: app.serverAPI + "/api/login", 
             data: JSON.stringify(logOnModel), 
@@ -86,7 +125,8 @@ var loginScreen = {
                 200: function (data) {
                     app.closeLoader();
                     if (data == 'true' || data == true) {
-                        app.user = $( '#username' ).val();
+                        app.user = logOnModel.UserName;
+                        loginScreen.saveNewUser(app.user, logOnModel.Password);
                         $.mobile.changePage("#menu");
                     }else{
                         app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
@@ -94,17 +134,46 @@ var loginScreen = {
                 } 
             } 
         });
+    },
+    getUser: function(successCallBack){
+        if (typeof(window.openDatabase)!='undefined') {
+            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
+            db.transaction(function(tx){
+                tx.executeSql('SELECT * FROM UserState', [], successCallBack, app.errorCB);
+            }, app.errorCB);
+        }else{
+            successCallBack(null, null);
+        }
+    },
+    saveNewUser: function(userName, password){
+        loginScreen.deleteUser();
+        console.log("Saving new user " + userName);
+        if (typeof(window.openDatabase)!='undefined') {
+            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
+            db.transaction(function(tx){
+                tx.executeSql('INSERT INTO UserState (userName, password, lastUserMessageId, lastPublicMessageId) VALUES ("'+userName+'", "'+password+'", 0, 0)');
+            }, app.errorCB);
+        }
+    },
+    deleteUser: function(){
+        console.log("Deleting user");
+        if (typeof(window.openDatabase)!='undefined') {
+            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
+            db.transaction(function(tx){
+                tx.executeSql('DELETE FROM UserState');
+            }, app.errorCB);
+        }
     }
 };
 
 var menuScreen = {
-    newUserMessages: {},
-    newPublicMessages: {},
-    lastUserMessageId: 0,
+    newUserMessages: [],
+    newPublicMessages: [],
+    lastPrivateMessageId: 0,
     lastPublicMessageId: 0,
     menuInit: function(){
-        menuScreen.loadMessages();
-        $( "#menu #refresh" ).click(menuScreen.loadMessages);
+        loginScreen.getUser(menuScreen.loadMessages);
+        //$( "#menu #refresh" ).click(menuScreen.getLastUserMessageId(menuScreen.loadMessages));
         $( "#personalMessages" ).click(function(){
             messagesScreen.consulting = "personal";
             messagesScreen.changeTitle();
@@ -114,16 +183,21 @@ var menuScreen = {
             messagesScreen.changeTitle();
         });
     },
-    loadMessages: function(){
+    loadMessages: function(tx, result){
         console.log("Actualizando mensajes personales");
         app.openLoader("Actualizando mensajes personales");
+        if (result.rows.length > 0) {
+            menuScreen.lastPrivateMessageId = result.rows.item(0).lastUserMessageId;
+            menuScreen.lastPublicMessageId = result.rows.item(0).lastPublicMessageId;
+            app.user = result.rows.item(0).userName;
+        };
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user + "/messages/" + menuScreen.lastUserMessageId, 
+            url: app.serverAPI + "/api/user/" + app.user + "/messages/" + menuScreen.lastPrivateMessageId, 
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) {
-                    menuScreen.newUserMessages = JSON.parse(data);
+                    menuScreen.newUserMessages = data;
                     $( '#personalCount' ).text(menuScreen.newUserMessages.length);
                     app.closeLoader();
 
@@ -135,7 +209,7 @@ var menuScreen = {
                         contentType: "application/json;charset=utf-8", 
                         statusCode: { 
                             200: function (data) {
-                                menuScreen.newPublicMessages = JSON.parse(data);
+                                menuScreen.newPublicMessages = data;
                                 $( '#publicCount' ).text(menuScreen.newPublicMessages.length);
                                 app.closeLoader();
                             } 
@@ -153,7 +227,7 @@ var messagesScreen = {
         $( "#viewMenu" ).on( "change", messagesScreen.loadMessages($(this).val()));
         $( "#viewMenu option[value=new]" ).attr('selected', 'selected');
         $( "#viewMenu" ).selectmenu('refresh');
-        //messagesScreen.loadMessages('new');
+        messagesScreen.loadMessages('new');
     },
     changeTitle: function(){
         if (messagesScreen.consulting == "personal"){
@@ -169,13 +243,13 @@ var messagesScreen = {
         if (messagesScreen.consulting == "personal"){
             if (selected == "new") {
                 messagesScreen.loadNewPersonalMessages();
-            }else{
+            }else if (selected == "old"){
                 messagesScreen.loadOldPersonalMessages();
             };
         }else{
             if (selected == "new") {
                 messagesScreen.loadNewPublicMessages();
-            }else{
+            }else if (selected == "old"){
                 messagesScreen.loadOldPublicMessages();
             };
         };
@@ -183,8 +257,9 @@ var messagesScreen = {
     loadNewPersonalMessages: function(){
         console.log("Cargando nuevos mensajes personales.");
         for (var i = menuScreen.newUserMessages.length - 1; i >= 0; i--) {
-            $( "#messageList" ).append('<li>' + menuScreen.newUserMessages[i].Nota + '</li>').listview('refresh');
+            $( "#messageList" ).append('<li>' + menuScreen.newUserMessages[i].Nota + '</li>');
         };
+        $( "#messageList" ).listview();
     },
     loadOldPersonalMessages: function(){
         console.log("Cargando anteriores mensajes personales.");
@@ -192,8 +267,9 @@ var messagesScreen = {
     loadNewPublicMessages: function(){
         console.log("Cargando nuevos mensajes públicos.");
         for (var i = menuScreen.newPublicMessages.length - 1; i >= 0; i--) {
-            $( "#messageList" ).append('<li>' + menuScreen.newPublicMessages[i].Nota + '</li>').listview('refresh');
+            $( "#messageList" ).append('<li>' + menuScreen.newPublicMessages[i].Nota + '</li>');
         };
+        $( "#messageList" ).listview();
     },
     loadOldPublicMessages: function(){
         console.log("Cargando anteriores mensajes públicos.");  
