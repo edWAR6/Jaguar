@@ -131,15 +131,15 @@
 			"file": "www/index.html",
 			"settings":
 			{
-				"buffer_size": 3489,
+				"buffer_size": 19413,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "www/app.html",
+			"file": "www/js/index.js",
 			"settings":
 			{
-				"buffer_size": 72021,
+				"buffer_size": 3298,
 				"line_ending": "Unix"
 			}
 		}
@@ -168,6 +168,10 @@
 	},
 	"file_history":
 	[
+		"/Users/edWAR6/Downloads/jquery.mobile-1.3.0-beta.1/demos/index.html",
+		"/Users/edWAR6/Work/EARTH/Jaguar/www/app.html",
+		"/Users/edWAR6/Work/EARTH/Jaguar/www/css/jquery.mobile-1.3.0-beta.1.min.css",
+		"/Users/edWAR6/Work/EARTH/Jaguar/www/index.html",
 		"/Users/edWAR6/Work/iPadDemo/www/css/index.css",
 		"/Users/edWAR6/Work/iPadDemo/www/index.html",
 		"/Users/edWAR6/Work/iPadDemo/www/books/interactive/index.html",
@@ -214,7 +218,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 0.0,
+		"height": 93.0,
 		"where_history":
 		[
 			"/Users/edWAR6/Work/iPadDemo/www",
@@ -226,6 +230,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"#",
+			"img",
+			"images",
 			"swipeH",
 			"iframe",
 			"\"controls",
@@ -340,6 +347,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"../img",
+			"img",
 			"(){\n",
 			"\"true\" class=\"backMenu\">Atras</a>",
 			"\"#page-transitions-page\"",
@@ -365,7 +374,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -373,15 +382,15 @@
 					"file": "www/index.html",
 					"settings":
 					{
-						"buffer_size": 3489,
+						"buffer_size": 19413,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3224,
-								3250
+								19110,
+								19110
 							]
 						],
 						"settings":
@@ -391,30 +400,30 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 402.0,
+						"translation.y": 6347.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "www/app.html",
+					"file": "www/js/index.js",
 					"settings":
 					{
-						"buffer_size": 72021,
+						"buffer_size": 3298,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								632,
-								548
+								1271,
+								1271
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},

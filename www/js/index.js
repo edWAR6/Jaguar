@@ -17,8 +17,9 @@
  * under the License.
  */
 var app = {
-    serverAPI: "http://172.24.22.22:2619/api/login",
-    //serverAPI: "http://192.168.1.106:2619/api/login",
+    //serverAPI: "http://172.24.22.22:2619",
+    serverAPI: "http://192.168.1.109:2619",
+    user: "",
     // Application Constructor
     initialize: function() {
         $.support.cors = true;
@@ -34,10 +35,11 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady  , false);
 
         $( '#login' ).bind( 'pageinit', loginScreen.loginInit);
-        //$( document ).on( 'mobileinit', setLoader);
+        $( '#menu' ).bind( 'pageinit', menuScreen.menuInit);
+        $( '#messages' ).bind( 'pageinit', messagesScreen.messagesInit);
     },
     onOffline: function(){
-        alert('Conección a Internet no encontrada. Intente más tarde.');
+        app.alert('Error', 'Conección a Internet no encontrada. Intente más tarde.', 'Ok');
     },
     // deviceready Event Handler
     //
@@ -45,12 +47,6 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log('device ready');
-    },
-    setLoader: function(){
-        $.mobile.loader.prototype.options.text = "Accediendo";
-        $.mobile.loader.prototype.options.textVisible = false;
-        $.mobile.loader.prototype.options.theme = "e";
-        $.mobile.loader.prototype.options.html = "";
     },
     openLoader: function(message){
         $.mobile.loading( 'show', {
@@ -62,6 +58,12 @@ var app = {
     },
     closeLoader: function(){
         $.mobile.loading( 'hide' );
+    },
+    alert: function(title, content, button){
+        $( "#alert #title" ).text(title);
+        $( "#alert #content" ).text(content);
+        $( "#alert #button" ).text(button);
+        $( "#alert" ).popup( "open" );
     }
 };
 
@@ -76,7 +78,7 @@ var loginScreen = {
             Password: $( '#password' ).val()
         };
         $.ajax({ 
-            url: app.serverAPI, 
+            url: app.serverAPI + "/api/login", 
             data: JSON.stringify(logOnModel), 
             type: "POST", 
             contentType: "application/json;charset=utf-8", 
@@ -84,12 +86,116 @@ var loginScreen = {
                 200: function (data) {
                     app.closeLoader();
                     if (data == 'true' || data == true) {
+                        app.user = $( '#username' ).val();
                         $.mobile.changePage("#menu");
                     }else{
-                        alert("Usuario o contraseña incorrecta");
+                        app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
                     };
                 } 
             } 
         });
+    }
+};
+
+var menuScreen = {
+    newUserMessages: {},
+    newPublicMessages: {},
+    lastUserMessageId: 0,
+    lastPublicMessageId: 0,
+    menuInit: function(){
+        menuScreen.loadMessages();
+        $( "#menu #refresh" ).click(menuScreen.loadMessages);
+        $( "#personalMessages" ).click(function(){
+            messagesScreen.consulting = "personal";
+            messagesScreen.changeTitle();
+        });
+        $( "#publicMessages" ).click(function(){
+            messagesScreen.consulting = "public";
+            messagesScreen.changeTitle();
+        });
+    },
+    loadMessages: function(){
+        console.log("Actualizando mensajes personales");
+        app.openLoader("Actualizando mensajes personales");
+        $.ajax({ 
+            url: app.serverAPI + "/api/user/" + app.user + "/messages/" + menuScreen.lastUserMessageId, 
+            type: "GET", 
+            contentType: "application/json;charset=utf-8", 
+            statusCode: { 
+                200: function (data) {
+                    menuScreen.newUserMessages = JSON.parse(data);
+                    $( '#personalCount' ).text(menuScreen.newUserMessages.length);
+                    app.closeLoader();
+
+                    console.log("Actualizando mensajes públicos");
+                    app.openLoader("Actualizando mensajes públicos");
+                    $.ajax({ 
+                        url: app.serverAPI + "/api/public_messages/" + menuScreen.lastPublicMessageId, 
+                        type: "GET", 
+                        contentType: "application/json;charset=utf-8", 
+                        statusCode: { 
+                            200: function (data) {
+                                menuScreen.newPublicMessages = JSON.parse(data);
+                                $( '#publicCount' ).text(menuScreen.newPublicMessages.length);
+                                app.closeLoader();
+                            } 
+                        } 
+                    });
+                } 
+            } 
+        });
+    }
+};
+
+var messagesScreen = {
+    cunsulting: "",
+    messagesInit: function(){
+        $( "#viewMenu" ).on( "change", messagesScreen.loadMessages($(this).val()));
+        $( "#viewMenu option[value=new]" ).attr('selected', 'selected');
+        $( "#viewMenu" ).selectmenu('refresh');
+        //messagesScreen.loadMessages('new');
+    },
+    changeTitle: function(){
+        if (messagesScreen.consulting == "personal"){
+            $( "#messages #messagesTitle" ).text("Personales");
+        }else{
+            $( "#messages #messagesTitle" ).text("Públicos");
+        };
+    },
+    loadMessages: function(assign){
+        console.log("Cargando mensajes.");
+        $("#messageList > li").remove();
+        var selected = assign;
+        if (messagesScreen.consulting == "personal"){
+            if (selected == "new") {
+                messagesScreen.loadNewPersonalMessages();
+            }else{
+                messagesScreen.loadOldPersonalMessages();
+            };
+        }else{
+            if (selected == "new") {
+                messagesScreen.loadNewPublicMessages();
+            }else{
+                messagesScreen.loadOldPublicMessages();
+            };
+        };
+    },
+    loadNewPersonalMessages: function(){
+        console.log("Cargando nuevos mensajes personales.");
+        for (var i = menuScreen.newUserMessages.length - 1; i >= 0; i--) {
+            $( "#messageList" ).append('<li>' + menuScreen.newUserMessages[i].Nota + '</li>').listview('refresh');
+        };
+    },
+    loadOldPersonalMessages: function(){
+        console.log("Cargando anteriores mensajes personales.");
+    },
+    loadNewPublicMessages: function(){
+        console.log("Cargando nuevos mensajes públicos.");
+        for (var i = menuScreen.newPublicMessages.length - 1; i >= 0; i--) {
+            $( "#messageList" ).append('<li>' + menuScreen.newPublicMessages[i].Nota + '</li>').listview('refresh');
+        };
+    },
+    loadOldPublicMessages: function(){
+        console.log("Cargando anteriores mensajes públicos.");  
     }
 };
