@@ -4,6 +4,34 @@
 		"selected_items":
 		[
 			[
+				"con",
+				"console"
+			],
+			[
+				"new",
+				"newPublicMessages"
+			],
+			[
+				"menu",
+				"menuScreen"
+			],
+			[
+				"for",
+				"for	for (…) {…} (Improved Native For-Loop)"
+			],
+			[
+				"message",
+				"messages"
+			],
+			[
+				"mess",
+				"messagesScreen"
+			],
+			[
+				"lo",
+				"log"
+			],
+			[
 				"dra",
 				"dragbox-content"
 			],
@@ -131,7 +159,7 @@
 			"file": "www/index.html",
 			"settings":
 			{
-				"buffer_size": 19413,
+				"buffer_size": 19415,
 				"line_ending": "Unix"
 			}
 		},
@@ -139,7 +167,7 @@
 			"file": "www/js/index.js",
 			"settings":
 			{
-				"buffer_size": 3298,
+				"buffer_size": 7481,
 				"line_ending": "Unix"
 			}
 		}
@@ -218,7 +246,7 @@
 	},
 	"find_in_files":
 	{
-		"height": 93.0,
+		"height": 0.0,
 		"where_history":
 		[
 			"/Users/edWAR6/Work/iPadDemo/www",
@@ -230,6 +258,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			" alert",
+			"alert",
 			"#",
 			"img",
 			"images",
@@ -382,15 +412,15 @@
 					"file": "www/index.html",
 					"settings":
 					{
-						"buffer_size": 19413,
+						"buffer_size": 19415,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								19110,
-								19110
+								17920,
+								17928
 							]
 						],
 						"settings":
@@ -400,7 +430,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6347.0,
+						"translation.y": 6102.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -410,15 +440,15 @@
 					"file": "www/js/index.js",
 					"settings":
 					{
-						"buffer_size": 3298,
+						"buffer_size": 7481,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1271,
-								1271
+								5742,
+								5742
 							]
 						],
 						"settings":
@@ -428,7 +458,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 2181.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
