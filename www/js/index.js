@@ -17,8 +17,8 @@
  * under the License.
  */
 var app = {
-    serverAPI: "http://172.24.22.22:2619",
-    //serverAPI: "http://192.168.1.109:2619",
+    // serverAPI: "http://172.24.22.22:2619",
+    serverAPI: "http://192.168.1.105:2619",
     user: "",
     // Application Constructor
     initialize: function() {
@@ -96,7 +96,7 @@ var loginScreen = {
         $( '#loginUser' ).click(loginScreen.loginClick);
         app.openDatabase();
         loginScreen.getUser(function(tx, result){
-            if (result.rows.length > 0) {
+            if (result !== null && result.rows.length > 0) {
                 console.log("Existing user: " + result.rows.item(0).userName);
                 app.openLoader("Iniciando sesión automáticamente");
                 var logOnModel = { 
@@ -131,7 +131,10 @@ var loginScreen = {
                     }else{
                         app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
                     };
-                } 
+                },
+                400: function (data) {
+                    app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
+                }
             } 
         });
     },
@@ -186,7 +189,7 @@ var menuScreen = {
     loadMessages: function(tx, result){
         console.log("Actualizando mensajes personales");
         app.openLoader("Actualizando mensajes personales");
-        if (result.rows.length > 0) {
+        if (result !== null && result.rows.length > 0) {
             menuScreen.lastPrivateMessageId = result.rows.item(0).lastUserMessageId;
             menuScreen.lastPublicMessageId = result.rows.item(0).lastPublicMessageId;
             app.user = result.rows.item(0).userName;

@@ -159,15 +159,18 @@
 			"file": "www/index.html",
 			"settings":
 			{
-				"buffer_size": 19415,
+				"buffer_size": 19564,
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"contents": "/*\n * Licensed to the Apache Software Foundation (ASF) under one\n * or more contributor license agreements.  See the NOTICE file\n * distributed with this work for additional information\n * regarding copyright ownership.  The ASF licenses this file\n * to you under the Apache License, Version 2.0 (the\n * \"License\"); you may not use this file except in compliance\n * with the License.  You may obtain a copy of the License at\n *\n * http://www.apache.org/licenses/LICENSE-2.0\n *\n * Unless required by applicable law or agreed to in writing,\n * software distributed under the License is distributed on an\n * \"AS IS\" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY\n * KIND, either express or implied.  See the License for the\n * specific language governing permissions and limitations\n * under the License.\n */\nvar app = {\n    // serverAPI: \"http://172.24.22.22:2619\",\n    serverAPI: \"http://192.168.1.105:2619\",\n    user: \"\",\n    // Application Constructor\n    initialize: function() {\n        console.log(\"Application initialized\");\n        $.support.cors = true;\n        this.bindEvents();\n    },\n    // Bind Event Listeners\n    //\n    // Bind any events that are required on startup. Common events are:\n    // 'load', 'deviceready', 'offline', and 'online'.\n    bindEvents: function() {\n        console.log(\"Binding events\");\n        document.addEventListener('offline', this.onOffline, false);\n        document.addEventListener('deviceready', this.onDeviceReady  , false);\n\n        $( '#login' ).bind( 'pageinit', loginScreen.loginInit);\n        $( '#menu' ).bind( 'pageinit', menuScreen.menuInit);\n        $( '#messages' ).bind( 'pageinit', messagesScreen.messagesInit);\n        $( '#searchGrades' ).bind( 'pageinit', searchGradesScreen.searchGradesInit);\n    },\n    onOffline: function(){\n        app.alert('Error', 'Conección a Internet no encontrada. Intente más tarde.', 'Ok');\n    },\n    // deviceready Event Handler\n    //\n    // The scope of 'this' is the event. In order to call the 'receivedEvent'\n    // function, we must explicity call 'app.receivedEvent(...);'\n    onDeviceReady: function() {\n        console.log('Device ready');\n    },\n    openDatabase: function(){\n        console.log('Opening database');\n        if (typeof(window.openDatabase)!='undefined') {\n            var db = window.openDatabase(\"jaguar\", \"1.0\", \"EARTH Jaguar\", 200000);\n            db.transaction(app.populateDB, app.errorCB, app.successCB);\n            console.log('Database created');\n        }\n    },\n    populateDB: function(tx) {\n        tx.executeSql('CREATE TABLE IF NOT EXISTS UserState (userName unique, password, lastUserMessageId, lastPublicMessageId)');\n    },\n    successCB: function() {\n        console.log(\"Success processing SQL.\");\n        //var db = window.openDatabase(\"jaguar\", \"1.0\", \"EARTH Jaguar\", 200000);\n        //db.transaction(app.queryDB, app.errorCB);\n    },\n    errorCB: function(err) {\n        console.log(\"Error processing SQL: \"+err.code+\", \"+err.message);\n    },\n    // queryDB: function(tx) {\n    //     tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);\n    // },\n    openLoader: function(message){\n        $.mobile.loading( 'show', {\n            text: message,\n            textVisible: true,\n            theme: 'e',\n            html: \"\"\n        });\n    },\n    closeLoader: function(){\n        $.mobile.loading( 'hide' );\n    },\n    alert: function(title, content, button){\n        $( \"#alert #title\" ).text(title);\n        $( \"#alert #content\" ).text(content);\n        $( \"#alert #button\" ).text(button);\n        $( \"#alert\" ).popup( \"open\" );\n    }\n};\n\nvar loginScreen = {\n    loginInit: function(){\n        console.log(\"Login initialized\");\n        $( '#loginUser' ).click(loginScreen.loginClick);\n        app.openDatabase();\n        loginScreen.getUser(function(tx, result){\n            if (result !== null && result.rows.length > 0) {\n                console.log(\"Existing user: \" + result.rows.item(0).userName);\n                app.openLoader(\"Iniciando sesión automáticamente\");\n                var logOnModel = { \n                    UserName: result.rows.item(0).userName, \n                    Password: result.rows.item(0).passowrd\n                };\n                loginScreen.login(logOnModel);\n            };\n        });\n    },\n    loginClick: function(){\n        app.openLoader(\"Iniciando sesión\");\n        var logOnModel = { \n            UserName: $( '#username' ).val(), \n            Password: $( '#password' ).val()\n        };\n        loginScreen.login(logOnModel);\n    },\n    login: function(logOnModel){\n        $.ajax({ \n            url: app.serverAPI + \"/api/login\", \n            data: JSON.stringify(logOnModel), \n            type: \"POST\", \n            contentType: \"application/json;charset=utf-8\", \n            statusCode: { \n                200: function (data) {\n                    app.closeLoader();\n                    if (data == 'true' || data == true) {\n                        app.user = logOnModel.UserName;\n                        loginScreen.saveNewUser(app.user, logOnModel.Password);\n                        $.mobile.changePage(\"#menu\");\n                    }else{\n                        app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');\n                    };\n                },\n                400: function (data) {\n                    app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');\n                }\n            } \n        });\n    },\n    getUser: function(successCallBack){\n        if (typeof(window.openDatabase)!='undefined') {\n            var db = window.openDatabase(\"jaguar\", \"1.0\", \"EARTH Jaguar\", 200000);\n            db.transaction(function(tx){\n                tx.executeSql('SELECT * FROM UserState', [], successCallBack, app.errorCB);\n            }, app.errorCB);\n        }else{\n            successCallBack(null, null);\n        }\n    },\n    saveNewUser: function(userName, password){\n        loginScreen.deleteUser();\n        console.log(\"Saving new user \" + userName);\n        if (typeof(window.openDatabase)!='undefined') {\n            var db = window.openDatabase(\"jaguar\", \"1.0\", \"EARTH Jaguar\", 200000);\n            db.transaction(function(tx){\n                tx.executeSql('INSERT INTO UserState (userName, password, lastUserMessageId, lastPublicMessageId) VALUES (\"'+userName+'\", \"'+password+'\", 0, 0)');\n            }, app.errorCB);\n        }\n    },\n    deleteUser: function(){\n        console.log(\"Deleting user\");\n        if (typeof(window.openDatabase)!='undefined') {\n            var db = window.openDatabase(\"jaguar\", \"1.0\", \"EARTH Jaguar\", 200000);\n            db.transaction(function(tx){\n                tx.executeSql('DELETE FROM UserState');\n            }, app.errorCB);\n        }\n    }\n};\n\nvar menuScreen = {\n    newUserMessages: [],\n    newPublicMessages: [],\n    lastPrivateMessageId: 0,\n    lastPublicMessageId: 0,\n    menuInit: function(){\n        loginScreen.getUser(menuScreen.loadMessages);\n        //$( \"#menu #refresh\" ).click(menuScreen.getLastUserMessageId(menuScreen.loadMessages));\n        $( \"#personalMessages\" ).click(function(){\n            messagesScreen.consulting = \"personal\";\n            messagesScreen.changeTitle();\n        });\n        $( \"#publicMessages\" ).click(function(){\n            messagesScreen.consulting = \"public\";\n            messagesScreen.changeTitle();\n        });\n    },\n    loadMessages: function(tx, result){\n        console.log(\"Actualizando mensajes personales\");\n        app.openLoader(\"Actualizando mensajes personales\");\n        if (result !== null && result.rows.length > 0) {\n            menuScreen.lastPrivateMessageId = result.rows.item(0).lastUserMessageId;\n            menuScreen.lastPublicMessageId = result.rows.item(0).lastPublicMessageId;\n            app.user = result.rows.item(0).userName;\n        };\n        $.ajax({ \n            url: app.serverAPI + \"/api/user/\" + app.user + \"/messages/\" + menuScreen.lastPrivateMessageId, \n            type: \"GET\", \n            contentType: \"application/json;charset=utf-8\", \n            statusCode: { \n                200: function (data) {\n                    menuScreen.newUserMessages = data;\n                    $( '#personalCount' ).text(menuScreen.newUserMessages.length);\n                    app.closeLoader();\n\n                    console.log(\"Actualizando mensajes públicos\");\n                    app.openLoader(\"Actualizando mensajes públicos\");\n                    $.ajax({ \n                        url: app.serverAPI + \"/api/public_messages/\" + menuScreen.lastPublicMessageId, \n                        type: \"GET\", \n                        contentType: \"application/json;charset=utf-8\", \n                        statusCode: { \n                            200: function (data) {\n                                menuScreen.newPublicMessages = data;\n                                $( '#publicCount' ).text(menuScreen.newPublicMessages.length);\n                                app.closeLoader();\n                            } \n                        } \n                    });\n                } \n            } \n        });\n    }\n};\n\nvar messagesScreen = {\n    cunsulting: \"\",\n    messagesInit: function(){\n        $( \"#viewMenu\" ).on( \"change\", messagesScreen.loadMessages($(this).val()));\n        $( \"#viewMenu option[value=new]\" ).attr('selected', 'selected');\n        $( \"#viewMenu\" ).selectmenu('refresh');\n        messagesScreen.loadMessages('new');\n    },\n    changeTitle: function(){\n        if (messagesScreen.consulting == \"personal\"){\n            $( \"#messages #messagesTitle\" ).text(\"Personales\");\n        }else{\n            $( \"#messages #messagesTitle\" ).text(\"Públicos\");\n        };\n    },\n    loadMessages: function(assign){\n        console.log(\"Cargando mensajes.\");\n        $(\"#messageList > li\").remove();\n        var selected = assign;\n        if (messagesScreen.consulting == \"personal\"){\n            if (selected == \"new\") {\n                messagesScreen.loadNewPersonalMessages();\n            }else if (selected == \"old\"){\n                messagesScreen.loadOldPersonalMessages();\n            };\n        }else{\n            if (selected == \"new\") {\n                messagesScreen.loadNewPublicMessages();\n            }else if (selected == \"old\"){\n                messagesScreen.loadOldPublicMessages();\n            };\n        };\n    },\n    loadNewPersonalMessages: function(){\n        console.log(\"Cargando nuevos mensajes personales.\");\n        for (var i = menuScreen.newUserMessages.length - 1; i >= 0; i--) {\n            $( \"#messageList\" ).append('<li>' + menuScreen.newUserMessages[i].Nota + '</li>');\n        };\n        $( \"#messageList\" ).listview();\n    },\n    loadOldPersonalMessages: function(){\n        console.log(\"Cargando anteriores mensajes personales.\");\n    },\n    loadNewPublicMessages: function(){\n        console.log(\"Cargando nuevos mensajes públicos.\");\n        for (var i = menuScreen.newPublicMessages.length - 1; i >= 0; i--) {\n            $( \"#messageList\" ).append('<li>' + menuScreen.newPublicMessages[i].Nota + '</li>');\n        };\n        $( \"#messageList\" ).listview();\n    },\n    loadOldPublicMessages: function(){\n        console.log(\"Cargando anteriores mensajes públicos.\");  \n    }\n};\n\nvar searchGradesScreen = {\n    searchGradesInit: function(){\n\n    }\n};\n",
 			"file": "www/js/index.js",
+			"file_size": 11122,
+			"file_write_time": 1360042258000000,
 			"settings":
 			{
-				"buffer_size": 7481,
+				"buffer_size": 11267,
 				"line_ending": "Unix"
 			}
 		}
@@ -258,6 +261,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"searchGrades",
 			" alert",
 			"alert",
 			"#",
@@ -412,15 +416,15 @@
 					"file": "www/index.html",
 					"settings":
 					{
-						"buffer_size": 19415,
+						"buffer_size": 19564,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								17920,
-								17928
+								12292,
+								12304
 							]
 						],
 						"settings":
@@ -430,7 +434,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 6102.0,
+						"translation.y": 4191.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -440,15 +444,15 @@
 					"file": "www/js/index.js",
 					"settings":
 					{
-						"buffer_size": 7481,
+						"buffer_size": 11267,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5742,
-								5742
+								1790,
+								1790
 							]
 						],
 						"settings":
@@ -458,7 +462,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2181.0,
+						"translation.y": 3532.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
