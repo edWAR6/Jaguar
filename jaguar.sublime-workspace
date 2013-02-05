@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"User",
+				"UserName"
+			],
+			[
+				"us",
+				"user"
+			],
+			[
+				"user",
+				"userName"
+			],
+			[
 				"con",
 				"console"
 			],
@@ -170,7 +182,11 @@
 			"file_write_time": 1360042258000000,
 			"settings":
 			{
+<<<<<<< HEAD
 				"buffer_size": 11267,
+=======
+				"buffer_size": 10932,
+>>>>>>> .
 				"line_ending": "Unix"
 			}
 		}
@@ -261,7 +277,14 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+<<<<<<< HEAD
 			"searchGrades",
+=======
+			"saveNewUser",
+			"deleteUser",
+			"drop",
+			"dro",
+>>>>>>> .
 			" alert",
 			"alert",
 			"#",
@@ -423,18 +446,30 @@
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								12292,
 								12304
+=======
+								1697,
+								1697
+>>>>>>> .
 							]
 						],
 						"settings":
 						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
 							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
+<<<<<<< HEAD
 						"translation.y": 4191.0,
+=======
+						"translation.y": 499.0,
+>>>>>>> .
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -444,25 +479,41 @@
 					"file": "www/js/index.js",
 					"settings":
 					{
+<<<<<<< HEAD
 						"buffer_size": 11267,
+=======
+						"buffer_size": 10932,
+>>>>>>> .
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								1790,
 								1790
+=======
+								853,
+								853
+>>>>>>> .
 							]
 						],
 						"settings":
 						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
+<<<<<<< HEAD
 						"translation.y": 3532.0,
+=======
+						"translation.y": 0.0,
+>>>>>>> .
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -501,6 +552,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.sftp":
+	{
+		"height": 198.0
+	},
 	"replace":
 	{
 		"height": 64.0

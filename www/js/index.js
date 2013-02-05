@@ -17,8 +17,13 @@
  * under the License.
  */
 var app = {
+<<<<<<< HEAD
     // serverAPI: "http://172.24.22.22:2619",
     serverAPI: "http://192.168.1.105:2619",
+=======
+    serverAPI: "http://172.24.22.23:2619",
+    //serverAPI: "http://192.168.1.109:2619",
+>>>>>>> .
     user: "",
     // Application Constructor
     initialize: function() {
