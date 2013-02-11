@@ -17,8 +17,8 @@
  * under the License.
  */
 var app = {
-    // serverAPI: "http://172.24.22.22:2619",
-    serverAPI: "http://192.168.1.105:2619",
+    serverAPI: "http://172.24.22.26:2619",
+    // serverAPI: "http://192.168.1.105:2619",
     user: "",
     // Application Constructor
     initialize: function() {
@@ -39,6 +39,7 @@ var app = {
         $( '#menu' ).bind( 'pageinit', menuScreen.menuInit);
         $( '#messages' ).bind( 'pageinit', messagesScreen.messagesInit);
         $( '#searchGrades' ).bind( 'pageinit', searchGradesScreen.searchGradesInit);
+        $( '#grades' ).bind( 'pageinit', gradesScreen.gradesInit);
     },
     onOffline: function(){
         app.alert('Error', 'Conección a Internet no encontrada. Intente más tarde.', 'Ok');
@@ -339,11 +340,60 @@ var searchGradesScreen = {
         $periodsContainer = $('div[data-year='+ year +'] ul[data-role=listview]')
         $periodsContainer.html('');
         for (var i = periods.length - 1; i >= 0; i--) {
-            li = "<li data-theme='f'><a href='#grades' data-transition='slide'>Trimestre " + periods[i].Trimestre + " - PP: " + periods[i].PP + "</a></li>";
+            li = "<li data-year='"+ year +"' data-period='"+ periods[i].Trimestre +"' data-theme='f'><a href='#grades' data-transition='slide'>Trimestre " + periods[i].Trimestre + " - PP: " + periods[i].PP + "</a></li>";
             $periodsContainer.append($(li));
         };
         $periodsContainer.listview();
-        // $('div[data-role=collapsible]').collapsible();
+        $('ul[data-role=listview] li').unbind("click");
+        $('ul[data-role=listview] li').bind('click', function(event, ui){
+            gradesScreen.loadGrades( $(this).data('year'), $(this).data('period') );
+        });
+        app.closeLoader();
+    }
+};
+
+var gradesScreen = {
+    gradesInit: function(){
+
+    },
+    loadGrades: function(year, period){
+        console.log("Loading grades...");
+        app.openLoader("Actualizando calificaciones");
+        $.ajax({
+            url: app.serverAPI + "/api/user/" + app.user + "/year/" + year + "/period/"+ period +"/grades", 
+            type: "GET", 
+            contentType: "application/json;charset=utf-8",
+            statusCode: { 
+                200: function (data) {
+                    gradesScreen.createGrades($.parseJSON(data));
+                } 
+            },
+            complete: function(){}
+        });
+    },
+    createGrades: function(grades){
+        $gradesContainer = $("#gradesContainer");
+        $gradesContainer.html('');
+        for (var i = grades.length - 1; i >= 0; i--) {
+            collapsible = '<div data-role="collapsible" data-collapsed="false"><h3>'+ grades[i].id_curso +' (MM:'+ grades[i].NotaMedioP +' CF:'+ grades[i].NotaFinal +')</h3>';
+            collapsible += '<div><p><strong>Curso:</strong>'+ grades[i].id_curso +' - Procesos Químicos Inorgánicos</p>';
+            collapsible += '<p><strong>Sección:</strong>'+ grades[i].seccion +'</p>';
+            collapsible += '<p><strong>Créditos:</strong>'+ grades[i].Creditos +'</p>';
+            collapsible += '<p><strong>Medio periodo:</strong>'+ grades[i].NotaMedioP +'</p>';
+            collapsible += '<p><strong>Final:</strong>'+ grades[i].NotaFinal +'</p>';
+            if (grades[i].Aprobado == '0') {
+                collapsible += '<p><strong>Estado:</strong>Reprobado</p>';
+            } else{
+                collapsible += '<p><strong>Estado:</strong>Aprobado</p>';
+            };
+            if (grades[i].Estado_Recuperacion == 'N') {
+                collapsible += '<p><strong>Recuperación:</strong>No aplicaca</p></div></div>';
+            } else{
+                collapsible += '<p><strong>Recuperación:</strong>Si</p></div></div>';
+            };
+            $gradesContainer.append($(collapsible));
+        };
+        $('div[data-role=collapsible]').collapsible();
         app.closeLoader();
     }
 };
