@@ -17,13 +17,8 @@
  * under the License.
  */
 var app = {
-<<<<<<< HEAD
     // serverAPI: "http://172.24.22.22:2619",
     serverAPI: "http://192.168.1.105:2619",
-=======
-    serverAPI: "http://172.24.22.23:2619",
-    //serverAPI: "http://192.168.1.109:2619",
->>>>>>> .
     user: "",
     // Application Constructor
     initialize: function() {
@@ -43,6 +38,7 @@ var app = {
         $( '#login' ).bind( 'pageinit', loginScreen.loginInit);
         $( '#menu' ).bind( 'pageinit', menuScreen.menuInit);
         $( '#messages' ).bind( 'pageinit', messagesScreen.messagesInit);
+        $( '#searchGrades' ).bind( 'pageinit', searchGradesScreen.searchGradesInit);
     },
     onOffline: function(){
         app.alert('Error', 'Conección a Internet no encontrada. Intente más tarde.', 'Ok');
@@ -281,5 +277,73 @@ var messagesScreen = {
     },
     loadOldPublicMessages: function(){
         console.log("Cargando anteriores mensajes públicos.");  
+    }
+};
+
+var searchGradesScreen = {
+    searchGradesInit: function(){
+        searchGradesScreen.loadYears();
+    },
+    loadYears: function(){
+        console.log("Loading years...");
+        app.openLoader("Actualizando años del estudiante");
+        $.ajax({ 
+            url: app.serverAPI + "/api/user/" + app.user + "/years", 
+            type: "GET", 
+            contentType: "application/json;charset=utf-8", 
+            statusCode: { 
+                200: function (data) {
+                    searchGradesScreen.createYears($.parseJSON(data));
+                } 
+            } 
+        });
+    },
+    createYears: function(years){
+        $yearsContainer = $("#yearsContainer");
+        $yearsContainer.html('');
+        for (var i = years.length - 1; i >= 0; i--) {
+            collapsible = "<div data-year=" + years[i].A_Adem + " data-role='collapsible' ";
+            if (i == years.length - 1) {
+                collapsible += "data-collapsed='false'";
+            } else{
+                collapsible += "data-collapsed='true'";
+            };
+            collapsible += " data-inset='true'><h3>" + years[i].A_Adem + " - PP: " + years[i].PP + "</h3><ul data-role='listview' data-divider-theme='e' data-inset='false'></ul></div>";  
+            $yearsContainer.append($(collapsible));
+        };
+        $('div[data-role=collapsible]').collapsible();
+        $('#yearsContainer div h3').bind('click', function(){
+            searchGradesScreen.loadPeriods($(this).parent().data('year'));
+        });
+        app.closeLoader();
+        searchGradesScreen.loadPeriods(years[years.length - 1].A_Adem);
+    },
+    loadPeriods: function(year){
+        console.log("Loading periods...");
+        app.openLoader("Actualizando periodos del " + year);
+        $.ajax({
+            url: app.serverAPI + "/api/user/" + app.user + "/year/" + year + "/periods", 
+            type: "GET", 
+            contentType: "application/json;charset=utf-8", 
+            statusCode: { 
+                200: function (data) {
+                    searchGradesScreen.createPeriods(year, $.parseJSON(data));
+                } 
+            },
+            complete: function(){
+                $('ul[data-role=listview]').listview('refresh');
+            }
+        });
+    },
+    createPeriods: function(year, periods){
+        $periodsContainer = $('div[data-year='+ year +'] ul[data-role=listview]')
+        $periodsContainer.html('');
+        for (var i = periods.length - 1; i >= 0; i--) {
+            li = "<li data-theme='f'><a href='#grades' data-transition='slide'>Trimestre " + periods[i].Trimestre + " - PP: " + periods[i].PP + "</a></li>";
+            $periodsContainer.append($(li));
+        };
+        $periodsContainer.listview();
+        // $('div[data-role=collapsible]').collapsible();
+        app.closeLoader();
     }
 };
