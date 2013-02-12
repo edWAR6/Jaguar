@@ -4,6 +4,22 @@
 		"selected_items":
 		[
 			[
+				"year",
+				"yearsContainer"
+			],
+			[
+				"if",
+				"ife	if … else"
+			],
+			[
+				"for",
+				"for	for (…) {…} (Improved Native For-Loop)"
+			],
+			[
+				"load",
+				"loadYears"
+			],
+			[
 				"con",
 				"console"
 			],
@@ -14,10 +30,6 @@
 			[
 				"menu",
 				"menuScreen"
-			],
-			[
-				"for",
-				"for	for (…) {…} (Improved Native For-Loop)"
 			],
 			[
 				"message",
@@ -155,6 +167,22 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "www/index.html",
+			"settings":
+			{
+				"buffer_size": 19584,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "www/js/index.js",
+			"settings":
+			{
+				"buffer_size": 14013,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -242,6 +270,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"\"",
+			"<<<",
+			"head",
 			"searchGrades",
 			" alert",
 			"alert",
@@ -357,11 +388,12 @@
 			"alert"
 		],
 		"highlight": true,
-		"in_selection": false,
+		"in_selection": true,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
 		[
+			"'",
 			"../img",
 			"img",
 			"(){\n",
@@ -389,8 +421,65 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "www/index.html",
+					"settings":
+					{
+						"buffer_size": 19584,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								12690,
+								12713
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4253.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "www/js/index.js",
+					"settings":
+					{
+						"buffer_size": 14013,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13416,
+								13416
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4528.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
