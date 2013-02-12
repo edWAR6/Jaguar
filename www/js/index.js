@@ -24,8 +24,8 @@ Array.prototype.remove = function(from, to) {
  * under the License.
  */
 var app = {
-    // serverAPI: "http://172.24.22.26:2619",
-    serverAPI: "http://192.168.1.106:2619",
+    serverAPI: "http://172.24.22.26:2619",
+    //serverAPI: "http://192.168.1.106:2619",
     user: {},
     // Application Constructor
     initialize: function() {
@@ -244,6 +244,7 @@ var messagesScreen = {
                 messagesScreen.loadOldPublicMessages();
             };
         };
+        $( "#messageList" ).listview('refresh');
     },
     loadNewPersonalMessages: function(){
         console.log("Loading new personal messages...");
@@ -347,7 +348,9 @@ var searchGradesScreen = {
             searchGradesScreen.loadPeriods($(this).parent().data('year'));
         });
         app.closeLoader();
-        searchGradesScreen.loadPeriods(years[years.length - 1].A_Adem);
+        if (years.length > 0) {
+            searchGradesScreen.loadPeriods(years[years.length - 1].A_Adem);
+        };
     },
     loadPeriods: function(year){
         console.log("Loading periods...");
@@ -374,8 +377,8 @@ var searchGradesScreen = {
             $periodsContainer.append($(li));
         };
         $periodsContainer.listview();
-        $('ul[data-role=listview] li').unbind("click");
-        $('ul[data-role=listview] li').bind('click', function(event, ui){
+        $('#yearsContainer ul[data-role=listview] li').unbind("click");
+        $('#yearsContainer ul[data-role=listview] li').bind('click', function(event, ui){
             gradesScreen.loadGrades( $(this).data('year'), $(this).data('period') );
         });
         app.closeLoader();

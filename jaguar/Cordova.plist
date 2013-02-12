@@ -32,6 +32,7 @@
 		<string>http://debug.phonegap.com</string>
 		<string>http://172.24.22.23:2619</string>
 		<string>http://172.24.22.22:2619</string>
+		<string>http://172.24.22.26:2619</string>
 	</array>
 	<key>Plugins</key>
 	<dict>
