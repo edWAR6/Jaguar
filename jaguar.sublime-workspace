@@ -4,12 +4,24 @@
 		"selected_items":
 		[
 			[
-				"year",
-				"yearsContainer"
+				"user",
+				"users"
 			],
 			[
 				"if",
-				"ife	if … else"
+				"if	if"
+			],
+			[
+				"use",
+				"user"
+			],
+			[
+				"lastP",
+				"lastPublicMessageId"
+			],
+			[
+				"year",
+				"yearsContainer"
 			],
 			[
 				"for",
@@ -171,7 +183,7 @@
 			"file": "www/index.html",
 			"settings":
 			{
-				"buffer_size": 19584,
+				"buffer_size": 15440,
 				"line_ending": "Unix"
 			}
 		},
@@ -179,7 +191,7 @@
 			"file": "www/js/index.js",
 			"settings":
 			{
-				"buffer_size": 14013,
+				"buffer_size": 17158,
 				"line_ending": "Unix"
 			}
 		}
@@ -270,6 +282,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"$.parseJSON",
+			"Loading personal messages...",
 			"\"",
 			"<<<",
 			"head",
@@ -388,7 +402,7 @@
 			"alert"
 		],
 		"highlight": true,
-		"in_selection": true,
+		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
@@ -421,7 +435,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 1,
 			"sheets":
 			[
 				{
@@ -429,15 +443,15 @@
 					"file": "www/index.html",
 					"settings":
 					{
-						"buffer_size": 19584,
+						"buffer_size": 15440,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								12690,
-								12713
+								0,
+								0
 							]
 						],
 						"settings":
@@ -457,15 +471,15 @@
 					"file": "www/js/index.js",
 					"settings":
 					{
-						"buffer_size": 14013,
+						"buffer_size": 17158,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13416,
-								13416
+								9685,
+								9685
 							]
 						],
 						"settings":
@@ -475,7 +489,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 4528.0,
+						"translation.y": 3441.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"

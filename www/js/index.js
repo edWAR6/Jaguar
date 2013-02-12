@@ -1,3 +1,10 @@
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -19,7 +26,7 @@
 var app = {
     // serverAPI: "http://172.24.22.26:2619",
     serverAPI: "http://192.168.1.106:2619",
-    user: "",
+    user: {},
     // Application Constructor
     initialize: function() {
         console.log("Application initialized");
@@ -37,6 +44,7 @@ var app = {
 
         $( '#login' ).bind( 'pageinit', loginScreen.loginInit);
         $( '#menu' ).bind( 'pageinit', menuScreen.menuInit);
+        $( '#menu' ).bind( 'pageshow', menuScreen.menuShow);
         $( '#messages' ).bind( 'pageinit', messagesScreen.messagesInit);
         $( '#messages' ).bind( 'pageshow', messagesScreen.messagesShow);
         $( '#searchGrades' ).bind( 'pageinit', searchGradesScreen.searchGradesInit);
@@ -52,28 +60,6 @@ var app = {
     onDeviceReady: function() {
         console.log('Device ready');
     },
-    openDatabase: function(){
-        console.log('Opening database');
-        if (typeof(window.openDatabase)!='undefined') {
-            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
-            db.transaction(app.populateDB, app.errorCB, app.successCB);
-            console.log('Database created');
-        }
-    },
-    populateDB: function(tx) {
-        tx.executeSql('CREATE TABLE IF NOT EXISTS UserState (userName unique, password, lastUserMessageId, lastPublicMessageId)');
-    },
-    successCB: function() {
-        console.log("Success processing SQL.");
-        //var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
-        //db.transaction(app.queryDB, app.errorCB);
-    },
-    errorCB: function(err) {
-        console.log("Error processing SQL: "+err.code+", "+err.message);
-    },
-    // queryDB: function(tx) {
-    //     tx.executeSql('SELECT * FROM DEMO', [], querySuccess, errorCB);
-    // },
     openLoader: function(message){
         $.mobile.loading( 'show', {
             text: message,
@@ -95,20 +81,22 @@ var app = {
 
 var loginScreen = {
     loginInit: function(){
-        console.log("Login initialized");
+        console.log("Login initialized...");
         $( '#loginUser' ).click(loginScreen.loginClick);
-        app.openDatabase();
-        loginScreen.getUser(function(tx, result){
-            if (result !== null && result.rows.length > 0) {
-                console.log("Existing user: " + result.rows.item(0).userName);
-                app.openLoader("Iniciando sesión automáticamente");
-                var logOnModel = { 
-                    UserName: result.rows.item(0).userName, 
-                    Password: result.rows.item(0).passowrd
-                };
-                loginScreen.login(logOnModel);
+        storedUsers = $.parseJSON(window.localStorage.getItem('users'));
+        if (storedUsers != null && storedUsers.length > 0) {
+            lastUser = storedUsers[storedUsers.length - 1];
+            console.log("Existing user: " + lastUser.userName);
+            app.openLoader("Iniciando sesión automáticamente");
+            var logOnModel = { 
+                UserName: lastUser.userName, 
+                Password: lastUser.password
             };
-        });
+            loginScreen.login(logOnModel);
+        }else{
+            storedUsers = [];
+            window.localStorage.setItem('users', JSON.stringify(storedUsers));
+        };
     },
     loginClick: function(){
         app.openLoader("Iniciando sesión");
@@ -128,8 +116,7 @@ var loginScreen = {
                 200: function (data) {
                     app.closeLoader();
                     if (data == 'true' || data == true) {
-                        app.user = logOnModel.UserName;
-                        loginScreen.saveNewUser(app.user, logOnModel.Password);
+                        loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
                         $.mobile.changePage("#menu");
                     }else{
                         app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
@@ -141,55 +128,40 @@ var loginScreen = {
             } 
         });
     },
-    getUser: function(successCallBack){
-        if (typeof(window.openDatabase)!='undefined') {
-            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
-            db.transaction(function(tx){
-                tx.executeSql('SELECT * FROM UserState', [], successCallBack, app.errorCB);
-            }, app.errorCB);
+    saveUser: function(userName, password){
+        var users = [];
+        users = $.parseJSON(window.localStorage.getItem('users'));
+        var exist = false;
+        var index = 0;
+        var user = {}
+        for (var i = users.length - 1; i >= 0; i--) {
+            if (users[i].userName === userName) {
+                exist = true;
+                index = i;
+            };
+        };
+        if (exist) {
+            user = users[index];
+            users.remove(index);
         }else{
-            successCallBack(null, null);
-        }
-    },
-    saveNewUser: function(userName, password){
-        loginScreen.deleteUser();
-        console.log("Saving new user " + userName);
-        if (typeof(window.openDatabase)!='undefined') {
-            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
-            db.transaction(function(tx){
-                tx.executeSql('INSERT INTO UserState (userName, password, lastUserMessageId, lastPublicMessageId) VALUES ("'+userName+'", "'+password+'", 0, 0)');
-            }, app.errorCB);
-        }
-    },
-    updateUser: function(userName, password, lastUserMessageId, lastPublicMessageId){
-        loginScreen.deleteUser();
-        console.log("Saving new user " + userName);
-        if (typeof(window.openDatabase)!='undefined') {
-            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
-            db.transaction(function(tx){
-                tx.executeSql('INSERT INTO UserState (userName, password, lastUserMessageId, lastPublicMessageId) VALUES ("'+userName+'", "'+password+'", 0, 0)');
-            }, app.errorCB);
-        }
-    },
-    deleteUser: function(){
-        console.log("Deleting user");
-        if (typeof(window.openDatabase)!='undefined') {
-            var db = window.openDatabase("jaguar", "1.0", "EARTH Jaguar", 200000);
-            db.transaction(function(tx){
-                tx.executeSql('DELETE FROM UserState');
-            }, app.errorCB);
-        }
+            user.lastPersonalMessageId = 0;
+            user.lastPublicMessageId = 0;
+        };
+        user.userName = userName;
+        user.password = password;
+        users.push(user);
+        window.localStorage.setItem('users', JSON.stringify(users));
+        app.user = user;
     }
 };
 
 var menuScreen = {
     newUserMessages: [],
     newPublicMessages: [],
-    lastPrivateMessageId: 0,
-    lastPublicMessageId: 0,
     menuInit: function(){
-        loginScreen.getUser(menuScreen.loadMessages);
-        //$( "#menu #refresh" ).click(menuScreen.getLastUserMessageId(menuScreen.loadMessages));
+        $( "#menu #refresh" ).click( function(){
+            menuScreen.loadMessages();
+        });
         $( "#personalMessages" ).click(function(){
             messagesScreen.consulting = "personal";
             messagesScreen.changeTitle();
@@ -199,33 +171,31 @@ var menuScreen = {
             messagesScreen.changeTitle();
         });
     },
-    loadMessages: function(tx, result){
+    menuShow: function(){
+        menuScreen.loadMessages();
+    },
+    loadMessages: function(){
         console.log("Loading personal messages...");
         app.openLoader("Actualizando mensajes personales");
-        if (result !== null && result.rows.length > 0) {
-            menuScreen.lastPrivateMessageId = result.rows.item(0).lastUserMessageId;
-            menuScreen.lastPublicMessageId = result.rows.item(0).lastPublicMessageId;
-            app.user = result.rows.item(0).userName;
-        };
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user + "/messages/" + menuScreen.lastPrivateMessageId, 
+            url: app.serverAPI + "/api/user/" + app.user.userName + "/messages/" + app.user.lastPersonalMessageId, 
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) {
-                    menuScreen.newUserMessages = $.parseJSON(data);
+                    menuScreen.newUserMessages = data;
                     $( '#personalCount' ).text(menuScreen.newUserMessages.length);
                     app.closeLoader();
 
                     console.log("Loading public messages...");
                     app.openLoader("Actualizando mensajes públicos");
                     $.ajax({ 
-                        url: app.serverAPI + "/api/public_messages/" + menuScreen.lastPublicMessageId, 
+                        url: app.serverAPI + "/api/public_messages/" + app.user.lastPublicMessageId, 
                         type: "GET", 
                         contentType: "application/json;charset=utf-8", 
                         statusCode: { 
                             200: function (data) {
-                                menuScreen.newPublicMessages = $.parseJSON(data);
+                                menuScreen.newPublicMessages = data;
                                 $( '#publicCount' ).text(menuScreen.newPublicMessages.length);
                                 app.closeLoader();
                             } 
@@ -280,21 +250,22 @@ var messagesScreen = {
         for (var i = menuScreen.newUserMessages.length - 1; i >= 0; i--) {
             $( "#messageList" ).append('<li>' + menuScreen.newUserMessages[i].Nota + '</li>');
             if (i === menuScreen.newUserMessages.length - 1) {
-                menuScreen.lastPrivateMessageId = menuScreen.newUserMessages[i].idNota;
+                app.user.lastPersonalMessageId = menuScreen.newUserMessages[i].idNota;
             };
         };
         $( "#messageList" ).listview();
+        menuScreen.newUserMessages = [];
     },
     loadOldPersonalMessages: function(){
         console.log("Loading old personal messages...");
         app.openLoader("Actualizando anteriores mensajes personales");
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user + "/old_messages/" + menuScreen.lastPrivateMessageId,
+            url: app.serverAPI + "/api/user/" + app.user.userName + "/old_messages/" + app.user.lastPersonalMessageId,
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) {
-                    oldPersonalMessages = $.parseJSON(data);
+                    oldPersonalMessages = data;
                     for (var i = oldPersonalMessages.length - 1; i >= 0; i--) {
                         $( "#messageList" ).append('<li>'+ oldPersonalMessages[i].Nota +'</li>');
                     };
@@ -311,21 +282,22 @@ var messagesScreen = {
         for (var i = menuScreen.newPublicMessages.length - 1; i >= 0; i--) {
             $( "#messageList" ).append('<li>' + menuScreen.newPublicMessages[i].Nota + '</li>');
             if (i === menuScreen.newPublicMessages.length - 1) {
-                menuScreen.lastPublicMessageId = menuScreen.newPublicMessages[i].idNotasPublicas;
+                app.user.lastPublicMessageId = menuScreen.newPublicMessages[i].idNotasPublicas;
             };
         };
         $( "#messageList" ).listview();
+        menuScreen.newPublicMessages = [];
     },
     loadOldPublicMessages: function(){
         console.log("Loading old public messages.");
         app.openLoader("Actualizando anteriores mensajes públicos");
         $.ajax({ 
-            url: app.serverAPI + "/api/old_public_messages/" + menuScreen.lastPublicMessageId,
+            url: app.serverAPI + "/api/old_public_messages/" + app.user.lastPublicMessageId,
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) {
-                    oldPublicMessages = $.parseJSON(data);
+                    oldPublicMessages = data;
                     for (var i = oldPublicMessages.length - 1; i >= 0; i--) {
                         $( "#messageList" ).append('<li>'+ oldPublicMessages[i].Nota +'</li>');
                     };
@@ -347,12 +319,12 @@ var searchGradesScreen = {
         console.log("Loading years...");
         app.openLoader("Actualizando años del estudiante");
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user + "/years", 
+            url: app.serverAPI + "/api/user/" + app.user.userName + "/years", 
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) {
-                    searchGradesScreen.createYears($.parseJSON(data));
+                    searchGradesScreen.createYears(data);
                 } 
             } 
         });
@@ -381,12 +353,12 @@ var searchGradesScreen = {
         console.log("Loading periods...");
         app.openLoader("Actualizando periodos del " + year);
         $.ajax({
-            url: app.serverAPI + "/api/user/" + app.user + "/year/" + year + "/periods", 
+            url: app.serverAPI + "/api/user/" + app.user.userName + "/year/" + year + "/periods", 
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
                 200: function (data) {
-                    searchGradesScreen.createPeriods(year, $.parseJSON(data));
+                    searchGradesScreen.createPeriods(year, data);
                 } 
             },
             complete: function(){
@@ -418,12 +390,12 @@ var gradesScreen = {
         console.log("Loading grades...");
         app.openLoader("Actualizando calificaciones");
         $.ajax({
-            url: app.serverAPI + "/api/user/" + app.user + "/year/" + year + "/period/"+ period +"/grades", 
+            url: app.serverAPI + "/api/user/" + app.user.userName + "/year/" + year + "/period/"+ period +"/grades", 
             type: "GET", 
             contentType: "application/json;charset=utf-8",
             statusCode: { 
                 200: function (data) {
-                    gradesScreen.createGrades($.parseJSON(data));
+                    gradesScreen.createGrades(data);
                 } 
             },
             complete: function(){}
