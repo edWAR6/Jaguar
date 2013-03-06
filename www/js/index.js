@@ -5,6 +5,32 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
+//Cross-domain issue
+function createCORSRequest(method, url) {
+  var xhr = new XMLHttpRequest();
+  if ("withCredentials" in xhr) {
+
+    // Check if the XMLHttpRequest object has a "withCredentials" property.
+    // "withCredentials" only exists on XMLHTTPRequest2 objects.
+    xhr.open(method, url, true);
+
+  } else if (typeof XDomainRequest != "undefined") {
+
+    // Otherwise, check if XDomainRequest.
+    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+    xhr = new XDomainRequest();
+    xhr.open(method, url);
+
+  } else {
+
+    // Otherwise, CORS is not supported by the browser.
+    xhr = null;
+
+  }
+  return xhr;
+};
+
+
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -24,8 +50,7 @@ Array.prototype.remove = function(from, to) {
  * under the License.
  */
 var app = {
-    serverAPI: "http://172.24.22.26:2619",
-    //serverAPI: "http://192.168.1.106:2619",
+    serverAPI: "http://mobilesga.earth.ac.cr/Jaguar_Mobile",
     user: {},
     // Application Constructor
     initialize: function() {
@@ -49,6 +74,8 @@ var app = {
         $( '#messages' ).bind( 'pageshow', messagesScreen.messagesShow);
         $( '#searchGrades' ).bind( 'pageinit', searchGradesScreen.searchGradesInit);
         $( '#grades' ).bind( 'pageinit', gradesScreen.gradesInit);
+        $( '#config' ).bind( 'pageinit', configScreen.configInit);
+        $( '#config' ).bind( 'pageshow', configScreen.configShow);
     },
     onOffline: function(){
         app.alert('Error', 'Conección a Internet no encontrada. Intente más tarde.', 'Ok');
@@ -107,11 +134,19 @@ var loginScreen = {
         loginScreen.login(logOnModel);
     },
     login: function(logOnModel){
+        $.support.cors = true;
         $.ajax({ 
             url: app.serverAPI + "/api/login", 
             data: JSON.stringify(logOnModel), 
             type: "POST", 
-            contentType: "application/json;charset=utf-8", 
+            contentType: "application/json;charset=utf-8",
+            xhrFields: {
+                withCredentials: false
+            },
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin"
+            },
             statusCode: { 
                 200: function (data) {
                     app.closeLoader();
@@ -123,7 +158,9 @@ var loginScreen = {
                     };
                 },
                 400: function (data) {
-                    app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
+                    app.closeLoader();
+                    console.log(data);
+                    app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
                 }
             } 
         });
@@ -252,6 +289,14 @@ var messagesScreen = {
             $( "#messageList" ).append('<li>' + menuScreen.newUserMessages[i].Nota + '</li>');
             if (i === menuScreen.newUserMessages.length - 1) {
                 app.user.lastPersonalMessageId = menuScreen.newUserMessages[i].idNota;
+                var users = [];
+                users = $.parseJSON(window.localStorage.getItem('users'));
+                for (var a = users.length - 1; a >= 0; a--) {
+                    if (users[a].userName == app.user.userName) {
+                        users[a].lastPersonalMessageId = menuScreen.newUserMessages[i].idNota;
+                    };
+                };
+                window.localStorage.setItem('users', JSON.stringify(users));
             };
         };
         $( "#messageList" ).listview();
@@ -284,6 +329,14 @@ var messagesScreen = {
             $( "#messageList" ).append('<li>' + menuScreen.newPublicMessages[i].Nota + '</li>');
             if (i === menuScreen.newPublicMessages.length - 1) {
                 app.user.lastPublicMessageId = menuScreen.newPublicMessages[i].idNotasPublicas;
+                var users = [];
+                users = $.parseJSON(window.localStorage.getItem('users'));
+                for (var a = users.length - 1; a >= 0; a--) {
+                    if (users[a].userName == app.user.userName) {
+                        users[a].lastPublicMessageId = menuScreen.newPublicMessages[i].idNotasPublicas;
+                    };
+                };
+                window.localStorage.setItem('users', JSON.stringify(users));
             };
         };
         $( "#messageList" ).listview();
@@ -428,5 +481,35 @@ var gradesScreen = {
         };
         $('div[data-role=collapsible]').collapsible();
         app.closeLoader();
+    }
+};
+
+
+var configScreen = {
+    configInit: function(){
+        $('#closeSession').click(function(){
+            configScreen.closeSession();
+        });
+        $('#closeAllSessions').click(function(){
+            configScreen.closeAllSessions();
+        });
+    },
+    configShow: function(){
+        $('#config div h2').text('Usuario: ' + app.user.userName);
+    },
+    closeSession: function(){
+        var users = [];
+        users = $.parseJSON(window.localStorage.getItem('users'));
+        for (var i = users.length - 1; i >= 0; i--) {
+            if (users[i].userName == app.user.userName) {
+                users.remove(i);
+            };
+        };
+        app.user = {};
+        window.localStorage.setItem('users', JSON.stringify(users));
+    },
+    closeAllSessions: function(){
+        var users = [];
+        window.localStorage.setItem('users', JSON.stringify(users));
     }
 };

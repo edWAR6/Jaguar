@@ -253,26 +253,32 @@
                 </h3>
             </div>
             <div data-role="content">
-                <h4>
-                    Usuario: Eric Alpizar
-                </h4>
-                <a data-role="button" href="#login">
-                    Cerrar cesión
-                </a>
+                <h2>
+                    Usuario: 
+                </h2>
+                
                 <div data-role="fieldcontain">
-                    <fieldset data-role="controlgroup">
-                        <label for="toggleswitch1">
-                            Notificaciones
-                        </label>
-                        <select name="toggleswitch1" id="toggleswitch1" data-theme="" data-role="slider">
-                            <option value="off">
-                                No
-                            </option>
-                            <option value="on">
-                                Si
-                            </option>
-                        </select>
-                    </fieldset>
+                    <label for="closeSession">Cerrar mi session</label>
+                    <a id="closeSession" data-role="button" data-inline="false" href="#login">
+                        Cerrar
+                    </a>
+                </div>
+                <div data-role="fieldcontain">
+                    <label for="closeAllSessions">Cerrar todas las sessiones</label>
+                    <a id="closeAllSessions" data-role="button" data-inline="false" href="#login">
+                        Cerrar
+                    </a>
+                </div>
+                <div data-role="fieldcontain">
+                    <label class="" for="pushNotifications">Notificaciones de mensajes y calificaciones</label>
+                    <select name="pushNotifications" id="pushNotifications" data-role="slider" data-inline="false">
+                        <option value="off">
+                            No
+                        </option>
+                        <option value="on">
+                            Si
+                        </option>
+                    </select>
                 </div>
             </div>
             <div data-theme="f" data-role="footer" data-position="fixed">
