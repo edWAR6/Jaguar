@@ -135,35 +135,60 @@ var loginScreen = {
     },
     login: function(logOnModel){
         $.support.cors = true;
-        $.ajax({ 
-            url: app.serverAPI + "/api/login", 
-            data: JSON.stringify(logOnModel), 
-            type: "POST", 
-            contentType: "application/json;charset=utf-8",
-            xhrFields: {
-                withCredentials: false
+
+        $.ajax({
+            type: "GET",
+            url: app.serverAPI + "/api/login",
+            jsonpCallback: 'jsonCallback',
+            contentType: "application/json",
+            dataType: 'jsonp',
+            data: JSON.stringify(logOnModel),
+            success: function(json) {
+                app.closeLoader();
+                if (json == 'true' || json == true) {
+                    loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
+                    $.mobile.changePage("#menu");
+                }else{
+                    app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
+                };
             },
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin"
-            },
-            statusCode: { 
-                200: function (data) {
-                    app.closeLoader();
-                    if (data == 'true' || data == true) {
-                        loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
-                        $.mobile.changePage("#menu");
-                    }else{
-                        app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
-                    };
-                },
-                400: function (data) {
-                    app.closeLoader();
-                    console.log(data);
-                    app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
-                }
-            } 
+            error: function(e) {
+                app.closeLoader();
+                console.log(e);
+                app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
+            }
         });
+
+        // $.ajax({ 
+        //     url: app.serverAPI + "/api/login?jsoncallback=?",
+        //     crossDomain: true,
+        //     data: JSON.stringify(logOnModel), 
+        //     type: "POST", 
+        //     contentType: "application/json;charset=utf-8",
+        //     xhrFields: {
+        //         withCredentials: false
+        //     },
+        //     headers: {
+        //         "Access-Control-Allow-Origin": "*",
+        //         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin"
+        //     },
+        //     statusCode: { 
+        //         200: function (data) {
+        //             app.closeLoader();
+        //             if (data == 'true' || data == true) {
+        //                 loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
+        //                 $.mobile.changePage("#menu");
+        //             }else{
+        //                 app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
+        //             };
+        //         },
+        //         400: function (data) {
+        //             app.closeLoader();
+        //             console.log(data);
+        //             app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
+        //         }
+        //     } 
+        // });
     },
     saveUser: function(userName, password){
         var users = [];
