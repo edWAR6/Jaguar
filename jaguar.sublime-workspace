@@ -478,8 +478,8 @@
 						"selection":
 						[
 							[
-								9685,
-								9685
+								6659,
+								6672
 							]
 						],
 						"settings":
@@ -489,7 +489,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 3441.0,
+						"translation.y": 3322.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -577,6 +577,6 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 257.0,
+	"side_bar_width": 50.0,
 	"status_bar_visible": true
 }
