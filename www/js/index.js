@@ -6,29 +6,29 @@ Array.prototype.remove = function(from, to) {
 };
 
 //Cross-domain issue
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
+// function createCORSRequest(method, url) {
+//   var xhr = new XMLHttpRequest();
+//   if ("withCredentials" in xhr) {
 
-    // Check if the XMLHttpRequest object has a "withCredentials" property.
-    // "withCredentials" only exists on XMLHTTPRequest2 objects.
-    xhr.open(method, url, true);
+//     // Check if the XMLHttpRequest object has a "withCredentials" property.
+//     // "withCredentials" only exists on XMLHTTPRequest2 objects.
+//     xhr.open(method, url, true);
 
-  } else if (typeof XDomainRequest != "undefined") {
+//   } else if (typeof XDomainRequest != "undefined") {
 
-    // Otherwise, check if XDomainRequest.
-    // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
+//     // Otherwise, check if XDomainRequest.
+//     // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+//     xhr = new XDomainRequest();
+//     xhr.open(method, url);
 
-  } else {
+//   } else {
 
-    // Otherwise, CORS is not supported by the browser.
-    xhr = null;
+//     // Otherwise, CORS is not supported by the browser.
+//     xhr = null;
 
-  }
-  return xhr;
-};
+//   }
+//   return xhr;
+// };
 
 
 /*
@@ -51,6 +51,7 @@ function createCORSRequest(method, url) {
  */
 var app = {
     serverAPI: "http://mobilesga.earth.ac.cr/Jaguar_Mobile",
+    // serverAPI: "http://172.24.22.28:2619",
     user: {},
     // Application Constructor
     initialize: function() {
@@ -137,12 +138,13 @@ var loginScreen = {
         $.support.cors = true;
 
         $.ajax({
-            type: "GET",
+            type: 'POST',
             url: app.serverAPI + "/api/login",
-            jsonpCallback: 'jsonCallback',
             contentType: "application/json",
-            dataType: 'jsonp',
             data: JSON.stringify(logOnModel),
+            xhrFields: {
+                withCredentials: false 
+            },
             success: function(json) {
                 app.closeLoader();
                 if (json == 'true' || json == true) {
@@ -152,12 +154,35 @@ var loginScreen = {
                     app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
                 };
             },
-            error: function(e) {
+            error: function(request, status, error) {
                 app.closeLoader();
-                console.log(e);
+                console.log(error);
                 app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
             }
         });
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: app.serverAPI + "/api/login",
+        //     jsonpCallback: 'jsonCallback',
+        //     contentType: "application/json",
+        //     dataType: 'jsonp',
+        //     data: JSON.stringify(logOnModel),
+        //     success: function(json) {
+        //         app.closeLoader();
+        //         if (json == 'true' || json == true) {
+        //             loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
+        //             $.mobile.changePage("#menu");
+        //         }else{
+        //             app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
+        //         };
+        //     },
+        //     error: function(e) {
+        //         app.closeLoader();
+        //         console.log(e);
+        //         app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
+        //     }
+        // });
 
         // $.ajax({ 
         //     url: app.serverAPI + "/api/login?jsoncallback=?",
