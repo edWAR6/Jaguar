@@ -191,7 +191,7 @@
 			"file": "www/js/index.js",
 			"settings":
 			{
-				"buffer_size": 21260,
+				"buffer_size": 22325,
 				"line_ending": "Unix"
 			}
 		}
@@ -456,6 +456,9 @@
 						],
 						"settings":
 						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
 							"syntax": "Packages/HTML/HTML.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -471,19 +474,22 @@
 					"file": "www/js/index.js",
 					"settings":
 					{
-						"buffer_size": 21260,
+						"buffer_size": 22325,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5708,
-								5708
+								0,
+								0
 							]
 						],
 						"settings":
 						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
@@ -528,6 +534,10 @@
 		]
 	},
 	"menu_visible": true,
+	"output.sftp":
+	{
+		"height": 198.0
+	},
 	"replace":
 	{
 		"height": 64.0
