@@ -50,7 +50,7 @@ Array.prototype.remove = function(from, to) {
  * under the License.
  */
 var app = {
-    serverAPI: "http://mobilesga.earth.ac.cr/Jaguar_Mobile",
+    serverAPI: "http://mobilesga.earth.ac.cr/JaguarMobile",
     // serverAPI: "http://172.24.22.28:2619",
     user: {},
     // Application Constructor
