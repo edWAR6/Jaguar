@@ -52,6 +52,7 @@ Array.prototype.remove = function(from, to) {
 var app = {
     serverAPI: "http://mobilesga.earth.ac.cr/JaguarMobile",
     // serverAPI: "http://172.24.22.28:2619",
+    // serverAPI: "http://192.168.0.109:3046",
     user: {},
     // Application Constructor
     initialize: function() {

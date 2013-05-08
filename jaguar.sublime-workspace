@@ -191,7 +191,11 @@
 			"file": "www/js/index.js",
 			"settings":
 			{
+<<<<<<< HEAD
 				"buffer_size": 22324,
+=======
+				"buffer_size": 22325,
+>>>>>>> .
 				"line_ending": "Unix"
 			}
 		}
@@ -474,15 +478,24 @@
 					"file": "www/js/index.js",
 					"settings":
 					{
+<<<<<<< HEAD
 						"buffer_size": 22324,
+=======
+						"buffer_size": 22325,
+>>>>>>> .
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
+<<<<<<< HEAD
 								2062,
 								2062
+=======
+								1813,
+								1813
+>>>>>>> .
 							]
 						],
 						"settings":
@@ -494,8 +507,13 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
+<<<<<<< HEAD
 						"translation.x": 0.0,
 						"translation.y": 4095.0,
+=======
+						"translation.x": 11.0,
+						"translation.y": 135.0,
+>>>>>>> .
 						"zoom_level": 1.0
 					},
 					"type": "text"
