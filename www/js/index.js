@@ -5,32 +5,6 @@ Array.prototype.remove = function(from, to) {
   return this.push.apply(this, rest);
 };
 
-//Cross-domain issue
-// function createCORSRequest(method, url) {
-//   var xhr = new XMLHttpRequest();
-//   if ("withCredentials" in xhr) {
-
-//     // Check if the XMLHttpRequest object has a "withCredentials" property.
-//     // "withCredentials" only exists on XMLHTTPRequest2 objects.
-//     xhr.open(method, url, true);
-
-//   } else if (typeof XDomainRequest != "undefined") {
-
-//     // Otherwise, check if XDomainRequest.
-//     // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
-//     xhr = new XDomainRequest();
-//     xhr.open(method, url);
-
-//   } else {
-
-//     // Otherwise, CORS is not supported by the browser.
-//     xhr = null;
-
-//   }
-//   return xhr;
-// };
-
-
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements.  See the NOTICE file
@@ -49,9 +23,10 @@ Array.prototype.remove = function(from, to) {
  * specific language governing permissions and limitations
  * under the License.
  */
+
 var app = {
-    // serverAPI: "http://mobilesga.earth.ac.cr/JaguarMobile",
-    serverAPI: "http://172.24.22.27:7745",
+    serverAPI: "http://mobilesga.earth.ac.cr/JaguarMobile",
+    // serverAPI: "http://172.24.22.27:7745",
     // serverAPI: "http://192.168.0.109:3046",
     user: {},
     // Application Constructor
@@ -161,60 +136,6 @@ var loginScreen = {
                 app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
             }
         });
-
-        // $.ajax({
-        //     type: "POST",
-        //     url: app.serverAPI + "/api/login",
-        //     jsonpCallback: 'jsonCallback',
-        //     contentType: "application/json",
-        //     dataType: 'jsonp',
-        //     data: JSON.stringify(logOnModel),
-        //     success: function(json) {
-        //         app.closeLoader();
-        //         if (json == 'true' || json == true) {
-        //             loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
-        //             $.mobile.changePage("#menu");
-        //         }else{
-        //             app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
-        //         };
-        //     },
-        //     error: function(e) {
-        //         app.closeLoader();
-        //         console.log(e);
-        //         app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
-        //     }
-        // });
-
-        // $.ajax({ 
-        //     url: app.serverAPI + "/api/login?jsoncallback=?",
-        //     crossDomain: true,
-        //     data: JSON.stringify(logOnModel), 
-        //     type: "POST", 
-        //     contentType: "application/json;charset=utf-8",
-        //     xhrFields: {
-        //         withCredentials: false
-        //     },
-        //     headers: {
-        //         "Access-Control-Allow-Origin": "*",
-        //         "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Origin"
-        //     },
-        //     statusCode: { 
-        //         200: function (data) {
-        //             app.closeLoader();
-        //             if (data == 'true' || data == true) {
-        //                 loginScreen.saveUser(logOnModel.UserName, logOnModel.Password);
-        //                 $.mobile.changePage("#menu");
-        //             }else{
-        //                 app.alert('Error', 'Usuario o contraseña incorrecta.', 'Ok');
-        //             };
-        //         },
-        //         400: function (data) {
-        //             app.closeLoader();
-        //             console.log(data);
-        //             app.alert('Error', 'Ocurrió un error de conección al servidor.', 'Ok');
-        //         }
-        //     } 
-        // });
     },
     saveUser: function(userName, password){
         var users = [];
@@ -266,7 +187,8 @@ var menuScreen = {
         console.log("Loading personal messages...");
         app.openLoader("Actualizando mensajes personales");
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user.userName + "/messages/" + app.user.lastPersonalMessageId, 
+            url: app.serverAPI + "/api/" + app.user.userName + "/messages/" + app.user.lastPersonalMessageId, 
+            data: {UserName:app.user.userName, Password: app.user.password},
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
@@ -278,7 +200,8 @@ var menuScreen = {
                     console.log("Loading public messages...");
                     app.openLoader("Actualizando mensajes públicos");
                     $.ajax({ 
-                        url: app.serverAPI + "/api/public_messages/" + app.user.lastPublicMessageId, 
+                        url: app.serverAPI + "/api/public/messages/" + app.user.lastPublicMessageId, 
+                        data: {UserName:app.user.userName, Password: app.user.password},
                         type: "GET", 
                         contentType: "application/json;charset=utf-8", 
                         statusCode: { 
@@ -357,7 +280,8 @@ var messagesScreen = {
         console.log("Loading old personal messages...");
         app.openLoader("Actualizando anteriores mensajes personales");
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user.userName + "/old_messages/" + app.user.lastPersonalMessageId,
+            url: app.serverAPI + "/api/" + app.user.userName + "/old/messages/" + app.user.lastPersonalMessageId,
+            data: {UserName:app.user.userName, Password: app.user.password},
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
@@ -397,7 +321,8 @@ var messagesScreen = {
         console.log("Loading old public messages.");
         app.openLoader("Actualizando anteriores mensajes públicos");
         $.ajax({ 
-            url: app.serverAPI + "/api/old_public_messages/" + app.user.lastPublicMessageId,
+            url: app.serverAPI + "/api/old/public/messages/" + app.user.lastPublicMessageId,
+            data: {UserName:app.user.userName, Password: app.user.password},
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
@@ -424,7 +349,8 @@ var searchGradesScreen = {
         console.log("Loading years...");
         app.openLoader("Actualizando años del estudiante");
         $.ajax({ 
-            url: app.serverAPI + "/api/user/" + app.user.userName + "/years", 
+            url: app.serverAPI + "/api/" + app.user.userName + "/years", 
+            data: {UserName:app.user.userName, Password: app.user.password},
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
@@ -460,7 +386,8 @@ var searchGradesScreen = {
         console.log("Loading periods...");
         app.openLoader("Actualizando periodos del " + year);
         $.ajax({
-            url: app.serverAPI + "/api/user/" + app.user.userName + "/year/" + year + "/periods", 
+            url: app.serverAPI + "/api/" + app.user.userName + "/" + year + "/periods", 
+            data: {UserName:app.user.userName, Password: app.user.password},
             type: "GET", 
             contentType: "application/json;charset=utf-8", 
             statusCode: { 
@@ -497,7 +424,8 @@ var gradesScreen = {
         console.log("Loading grades...");
         app.openLoader("Actualizando calificaciones");
         $.ajax({
-            url: app.serverAPI + "/api/user/" + app.user.userName + "/year/" + year + "/period/"+ period +"/grades", 
+            url: app.serverAPI + "/api/" + app.user.userName + "/" + year + "/"+ period +"/grades", 
+            data: {UserName:app.user.userName, Password: app.user.password},
             type: "GET", 
             contentType: "application/json;charset=utf-8",
             statusCode: { 
