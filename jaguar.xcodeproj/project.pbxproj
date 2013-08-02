@@ -7,10 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1B77969916CAD834006904A4 /* earth_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B77969816CAD834006904A4 /* earth_small.png */; };
-		1B7D8E3C16CC08C800CE012B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B7D8E3B16CC08C800CE012B /* Default.png */; };
-		1B7D8E3E16CC0DAA00CE012B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B7D8E3D16CC0DAA00CE012B /* Default@2x.png */; };
-		1B7D8E4016CC0DB100CE012B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1B7D8E3F16CC0DB100CE012B /* Default-568h@2x.png */; };
 		1D3623260D0F684500981E51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D3623250D0F684500981E51 /* AppDelegate.m */; };
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
@@ -67,10 +63,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1B77969816CAD834006904A4 /* earth_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = earth_small.png; sourceTree = "<group>"; };
-		1B7D8E3B16CC08C800CE012B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		1B7D8E3D16CC0DAA00CE012B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		1B7D8E3F16CC0DB100CE012B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -180,10 +172,6 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				1B7D8E3F16CC0DB100CE012B /* Default-568h@2x.png */,
-				1B7D8E3D16CC0DAA00CE012B /* Default@2x.png */,
-				1B7D8E3B16CC08C800CE012B /* Default.png */,
-				1B77969816CAD834006904A4 /* earth_small.png */,
 				301BF56E109A69640062928A /* www */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
 				080E96DDFE201D6D7F000001 /* Classes */,
@@ -392,10 +380,6 @@
 				3088BBC1154F3926009F9C59 /* Default@2x~iphone.png in Resources */,
 				3088BBC2154F3926009F9C59 /* Default~iphone.png in Resources */,
 				D4A0D8761607E02300AEF8BB /* Default-568h@2x~iphone.png in Resources */,
-				1B77969916CAD834006904A4 /* earth_small.png in Resources */,
-				1B7D8E3C16CC08C800CE012B /* Default.png in Resources */,
-				1B7D8E3E16CC0DAA00CE012B /* Default@2x.png in Resources */,
-				1B7D8E4016CC0DB100CE012B /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,7 +511,7 @@
 				INFOPLIST_FILE = "jaguar/jaguar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = jaguar;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = AppStore;
@@ -548,7 +532,7 @@
 				INFOPLIST_FILE = "jaguar/jaguar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = jaguar;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -566,7 +550,7 @@
 				INFOPLIST_FILE = "jaguar/jaguar-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = jaguar;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
